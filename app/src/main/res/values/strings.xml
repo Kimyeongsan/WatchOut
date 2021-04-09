@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WatchOut</string>
+
+    <string name="main_button_Top_Left">1</string>
+    <string name="main_button_Top_Right">2</string>
+    <string name="main_button_Bottom_Left">3</string>
+    <string name="main_button_Bottom_Right">4</string>
 </resources>
