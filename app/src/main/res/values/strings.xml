@@ -5,4 +5,22 @@
     <string name="main_button_Top_Right">2</string>
     <string name="main_button_Bottom_Left">3</string>
     <string name="main_button_Bottom_Right">4</string>
+
+
+    <!-- 버튼 알람별 출력문구 -->
+    <!-- 버튼<숫자> <단계순서> 입니다. -->
+
+    <string name ="Guide">좌측 상단을 누른후 목적지를 말씀해주세요.</string>
+
+    <!-- 목적지 입력-->
+    <string name="button_1_1">입력된 목적지는 </string>
+    <string name="button_1_2">입니다. </string>
+    <string name ="button_1_3"> 목적지가 잘못 입력되었으면 버튼을 다시 눌러주세요. </string>
+
+    <!-- 도착-->
+    <string name ="button_2_1">목적지에 도착했습니다. 보호자에게 알림을 전송합니다.</string>
+    <!-- 일시정지-->
+    <string name ="button_3_1">위험 탐지를 잠시 중단합니다. 긴급상황 발생시 우측 하단의 화면을 터치해주세요. 다시 위험 탐지 기능을 실행 하려면 좌측 하단 버튼을 눌러주세요.</string>
+    <!-- 보호자 알림 발송-->
+    <string name ="button_4_1">긴급상황 발생. 보호자에게 알람을 전송합니다.</string>
 </resources>
