@@ -96,6 +96,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(getString(R.string.button_2_1),TextToSpeech.QUEUE_FLUSH,null);
+            }
+        });
+
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(getString(R.string.button_3_1),TextToSpeech.QUEUE_FLUSH,null);
+            }
+        });
+
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(getString(R.string.button_4_1),TextToSpeech.QUEUE_FLUSH,null);
+            }
+        });
+
 
     }
     //stt를 위한 리스너
