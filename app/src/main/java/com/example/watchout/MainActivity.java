@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder destination = new StringBuilder(" "); //입력받은 목적지 정보 임시 저장
     StringBuilder outString = new StringBuilder(" "); //출력문
 
+    public boolean destcheck = false; //목적지 정보가 입력된경우 true로 상태변경
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,32 +76,64 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
         //
 
-        //앱 시작하자마자 출력할 TTS <아직 작동안함!>
-        tts.speak(getString(R.string.Guide),TextToSpeech.QUEUE_FLUSH,null);
+
 
         //목적지 설정 버튼 < 인식, 출력 동시에 되고 있는거 수정해야함>
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //destcheck default = false
+                if(destcheck==false){
+                    //초기 가이드
+                    tts.speak(getString(R.string.Guide),TextToSpeech.QUEUE_FLUSH,null);
+                }else if(destcheck==true){
+
+                    //목적지 인식후 출려될 출력문
+                    // 합치고 출력
+                    //초기화 해줘야함
+                    outString.delete(0,outString.length());
+                    //입력된 정보 출력문으로 합치기
+                    outString.append(getString(R.string.button_1_1));
+                    outString.append(destination);
+                    outString.append(getString(R.string.button_1_2));
+                    outString.append(getString(R.string.button_1_3));
+                    //
+                    tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
+
+                    //
+
+
+                }
+            }
+        });
+
+
+
+        //길게 눌러서 목적지 입력받기
+        btn1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                //목적지 초기화
+                destination.delete(0,destination.length());
+
                 //인식 시작
                 mRecognizer=SpeechRecognizer.createSpeechRecognizer(getBaseContext());
                 mRecognizer.setRecognitionListener(listener);
                 mRecognizer.startListening(intent);
-                //
 
-                //목적지 인식후 출려될 출력문
-                // 합치고 출력
-                //<인식이 된 이후 출력되게 수정 필요>
-                outString.append(getString(R.string.button_1_1));
-                outString.append(destination);
-                outString.append(getString(R.string.button_1_2));
-                outString.append(getString(R.string.button_1_3));
 
-                tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
+
+                //목적지 입력 완료
+                destcheck=true;
                 //
+                return false;
             }
         });
+
+
+
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onEndOfSpeech() {
-
+            Toast.makeText(getApplicationContext(),"인식 종료됨",Toast.LENGTH_SHORT).show();
         }
 
         @Override
