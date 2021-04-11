@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "969020748715",
+    "project_id": "watchout-f73c4",
+    "storage_bucket": "watchout-f73c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969020748715:android:daf52594d1d3b08a8258ee",
+        "android_client_info": {
+          "package_name": "com.example.watchout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969020748715-b12kp8dn614eofiq7emvr2pn083dqk78.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.watchout",
+            "certificate_hash": "5558ede06422bd54cb0fe53af51d4b128bc50fc3"
+          }
+        },
+        {
+          "client_id": "969020748715-cavfiqd047r046oocq40fdsh7tu58ukl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwG5v_zdHgZKNDJ8pkkwh9lfNeUrWrOcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969020748715-cavfiqd047r046oocq40fdsh7tu58ukl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
