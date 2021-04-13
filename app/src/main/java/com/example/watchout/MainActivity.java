@@ -21,22 +21,16 @@ import java.util.Locale;
 import static android.speech.tts.TextToSpeech.ERROR;
 
 public class MainActivity extends AppCompatActivity {
-
     Intent intent;
     SpeechRecognizer mRecognizer;
-    Button btn1,btn2,btn3,btn4;
+    Button btn1,btn2,btn3,btn4; // 화면 타이틀 버튼
+    Button transform_btn;       // 화면 전환 버튼
     private TextToSpeech tts;
     final int PERMISSION = 1;
     StringBuilder destination = new StringBuilder(" "); //입력받은 목적지 정보 임시 저장
     StringBuilder outString = new StringBuilder(" "); //출력문
 
-    public boolean destcheck = false; //목적지 정보가 입력된경우 true로 상태변경
-
-
-
-
-
-
+    public boolean destCheck = false; //목적지 정보가 입력된경우 true로 상태변경
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +44,22 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
         //
+        transform_btn= findViewById(R.id.transform_btn);
+
+        //id/pw 찾기
+        transform_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GuardianActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //버튼연동
         btn1=(Button)findViewById(R.id.btn_Top_left);
         btn2=(Button)findViewById(R.id.btn_Top_Right);
         btn3=(Button)findViewById(R.id.btn_Bottom_Left);
         btn4=(Button)findViewById(R.id.btn_Bottom_Right);
-        //
 
         //tts 초기화
         tts =new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -67,15 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        //
-
 
         //stt 준비
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
-        //
-
 
 
         //목적지 설정 버튼 < 인식, 출력 동시에 되고 있는거 수정해야함>
@@ -84,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //destcheck default = false
-                if(destcheck==false){
+                if(destCheck==false){
                     //초기 가이드
                     tts.speak(getString(R.string.Guide),TextToSpeech.QUEUE_FLUSH,null);
-                }else if(destcheck==true){
+                }else if(destCheck==true){
 
                     //목적지 인식후 출려될 출력문
                     // 합치고 출력
@@ -102,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
                     tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
 
                     //
-
-
                 }
             }
         });
@@ -123,17 +120,12 @@ public class MainActivity extends AppCompatActivity {
                 mRecognizer.setRecognitionListener(listener);
                 mRecognizer.startListening(intent);
 
-
-
                 //목적지 입력 완료
-                destcheck=true;
+                destCheck=true;
                 //
                 return false;
             }
         });
-
-
-
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,5 +218,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //
 }
