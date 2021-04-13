@@ -47,7 +47,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     private Marker currentMarker = null;
-    Button transform_btn;       // 화면 전환 버튼
+    Button transform_btn, ward_btn;       // 화면 전환 버튼
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -94,13 +94,23 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        transform_btn= findViewById(R.id.transform_btn);
+        transform_btn = findViewById(R.id.transform_btn);
+        ward_btn = findViewById(R.id.ward_btn);
 
-        //id/pw 찾기
+        // 화면전환 버튼
         transform_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 피보호자 등록 화면
+        ward_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), WardActivity.class);
                 startActivity(intent);
             }
         });

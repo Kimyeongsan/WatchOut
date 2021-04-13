@@ -26,8 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".GuardianLoginActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".GuardianActivity"/>
+        <activity android:name=".WardActivity"/>
     </application>
 
 </manifest>
