@@ -20,6 +20,7 @@ public class GuardianLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         id = (EditText)findViewById(R.id.Id);
         name = (EditText)findViewById(R.id.Name);
@@ -30,7 +31,7 @@ public class GuardianLoginActivity extends AppCompatActivity {
         loginName = auto.getString("inputPwd",null);
 
         if(loginId !=null && loginName != null) {
-            if(loginId.equals("부르곰") && loginName.equals("네이버")) {
+            if(loginId.equals("HGD") && loginName.equals("홍길동")) {
                 Toast.makeText(GuardianLoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(GuardianLoginActivity.this,MainActivity.class);
                 startActivity(intent);

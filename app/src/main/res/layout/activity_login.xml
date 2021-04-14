@@ -30,13 +30,13 @@
         android:orientation="vertical">
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:layout_margin="15dp"
             android:background="@drawable/ward_radius">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Id"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:background="@drawable/ward_radius"
                 android:hint="ID">
             </com.google.android.material.textfield.TextInputEditText>
@@ -44,12 +44,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:layout_margin="15dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Name"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:background="@drawable/ward_radius"
                 android:hint="Name">
             </com.google.android.material.textfield.TextInputEditText>

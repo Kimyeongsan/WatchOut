@@ -1,13 +1,13 @@
 package com.example.watchout.Data;
 
-public class UserData {
+public class GuardianData {
     public String userUid;   // 시각장애인 UID
     public String userName;  // 시각장애인 Name
     public String location;  // 시각장애인 Location 정보
 
-    public UserData() { }
+    public GuardianData() { }
 
-    public UserData(String userUid, String userName, String location) {
+    public GuardianData(String userUid, String userName, String location) {
         this.userUid = userUid;
         this.userName = userName;
         this.location = location;
