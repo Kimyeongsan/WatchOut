@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private Marker currentMarker = null;
     Button transform_btn, ward_btn;       // 화면 전환 버튼
 
+
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
@@ -67,6 +69,10 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private Location location;
     private View mLayout;
 
+    //목적지 구현부분//
+    TextView btn_showDestination;
+    private String destinationMarkerPoint; //목적지 받아올 스트링 변수
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +102,25 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         transform_btn = findViewById(R.id.transform_btn);
         ward_btn = findViewById(R.id.ward_btn);
+        btn_showDestination=findViewById(R.id.btn_showDestination);
+
+
+        Intent intentDest = getIntent();//날아오는 인텐트 받기
+        destinationMarkerPoint=intentDest.getStringExtra("dest");
+        Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
+
+
+
+        //피보호자 목적지 확인하기
+        btn_showDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //여기서 메인에서 입력받은 목적지
+                Log.d("desttest","using DestData from MainActivity : "+destinationMarkerPoint);
+                //목적지 까지는 문제없음
+
+            }
+        });
 
         // 화면전환 버튼
         transform_btn.setOnClickListener(new View.OnClickListener() {

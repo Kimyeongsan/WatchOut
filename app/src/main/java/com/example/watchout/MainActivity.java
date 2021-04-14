@@ -11,6 +11,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -50,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
         transform_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GuardianActivity.class);
-                startActivity(intent);
+                Intent intentDest = new Intent(MainActivity.this,GuardianActivity.class);
+                intentDest.putExtra("dest",destination.toString());
+                startActivity(intentDest);
+
+
             }
         });
 
@@ -98,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
                     outString.append(getString(R.string.button_1_2));
                     outString.append(getString(R.string.button_1_3));
                     //
+
+                    //목적지 확인 로그
+                    Log.d("desttest","input dest : "+destination.toString());
+                    //
+
+
+
                     tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
 
                     //
@@ -119,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 mRecognizer=SpeechRecognizer.createSpeechRecognizer(getBaseContext());
                 mRecognizer.setRecognitionListener(listener);
                 mRecognizer.startListening(intent);
+                //인식 종료
+
+
 
                 //목적지 입력 완료
                 destCheck=true;
@@ -176,6 +190,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onEndOfSpeech() {
             Toast.makeText(getApplicationContext(),"인식 종료됨",Toast.LENGTH_SHORT).show();
+
+            //
         }
 
         @Override
