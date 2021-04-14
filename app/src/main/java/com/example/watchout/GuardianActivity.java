@@ -1,6 +1,7 @@
 package com.example.watchout;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -72,6 +73,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     //목적지 구현부분//
     TextView btn_showDestination;
     private String destinationMarkerPoint; //목적지 받아올 스트링 변수
+    MarkerOptions myMarker;
+    GoogleMap map;
     //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,9 +118,14 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         btn_showDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //여기서 메인에서 입력받은 목적지
+                //여기서 메인에서 입력받은 목적지 ->체크완료
                 Log.d("desttest","using DestData from MainActivity : "+destinationMarkerPoint);
-                //목적지 까지는 문제없음
+                //
+
+
+                //지도에 위치 입력하기
+
+                //
 
             }
         });
@@ -246,6 +254,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 mMap.setMyLocationEnabled(true);
         }
     }
+
+
 
 
     @Override
