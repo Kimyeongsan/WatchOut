@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     SpeechRecognizer mRecognizer;
     Button btn1,btn2,btn3,btn4; // 화면 타이틀 버튼
-    Button transform_btn;       // 화면 전환 버튼
     private TextToSpeech tts;
     final int PERMISSION = 1;
     StringBuilder destination = new StringBuilder(" "); //입력받은 목적지 정보 임시 저장
@@ -44,20 +43,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
                     Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
-        //
-        transform_btn= findViewById(R.id.transform_btn);
 
-        //id/pw 찾기
-        transform_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentDest = new Intent(MainActivity.this,GuardianActivity.class);
-                intentDest.putExtra("dest",destination.toString());
-                startActivity(intentDest);
-
-
-            }
-        });
 
         //버튼연동
         btn1=(Button)findViewById(R.id.btn_Top_left);

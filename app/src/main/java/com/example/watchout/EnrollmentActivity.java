@@ -4,11 +4,14 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class WardActivity extends AppCompatActivity {
+
+public class EnrollmentActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ward);
+        setContentView(R.layout.activity_enrollment);
         getSupportActionBar().hide();
+
     }
 }

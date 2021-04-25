@@ -6,6 +6,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.watchout.Login.GuardianLoginActivity;
+
 public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +18,7 @@ public class LoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(LoadingActivity.this,GuardianLoginActivity.class));
+                startActivity(new Intent(LoadingActivity.this, GuardianLoginActivity.class));
                 finish();
             }
         }, 2000);

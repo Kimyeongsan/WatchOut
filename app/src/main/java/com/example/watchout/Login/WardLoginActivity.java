@@ -1,4 +1,4 @@
-package com.example.watchout;
+package com.example.watchout.Login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,15 +11,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GuardianLoginActivity extends AppCompatActivity {
+import com.example.watchout.MainActivity;
+import com.example.watchout.R;
+
+public class WardLoginActivity extends AppCompatActivity {
     EditText id, name;
     Button btn;
     String loginId, loginName;
+    Button transform_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_loginward);
         getSupportActionBar().hide();
 
         id = (EditText)findViewById(R.id.Id);
@@ -30,10 +34,21 @@ public class GuardianLoginActivity extends AppCompatActivity {
         loginId = auto.getString("inputId",null);
         loginName = auto.getString("inputPwd",null);
 
+        transform_btn= findViewById(R.id.transform_btn);
+        // 화면전환 버튼
+        transform_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GuardianLoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         if(loginId !=null && loginName != null) {
             if(loginId.equals("HGD") && loginName.equals("홍길동")) {
-                Toast.makeText(GuardianLoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(GuardianLoginActivity.this,MainActivity.class);
+                Toast.makeText(WardLoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WardLoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -51,8 +66,8 @@ public class GuardianLoginActivity extends AppCompatActivity {
                         autoLogin.putString("inputPwd", name.getText().toString());
 
                         autoLogin.commit();
-                        Toast.makeText(GuardianLoginActivity.this, id.getText().toString()+"님 환영합니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(GuardianLoginActivity.this, MainActivity.class);
+                        Toast.makeText(WardLoginActivity.this, id.getText().toString()+"님 환영합니다.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(WardLoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }

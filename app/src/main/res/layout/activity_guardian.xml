@@ -24,20 +24,12 @@
             android:elevation="8dp">
         </TextView>
 
-        <android.widget.Button
-            android:id="@+id/transform_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/transform" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/layout_main"
         android:layout_width="350dp"
-        android:layout_height="370dp"
+        android:layout_height="350dp"
         android:layout_margin="10dp"
         android:layout_gravity="center">
         <fragment
@@ -48,12 +40,29 @@
             android:name="com.google.android.gms.maps.SupportMapFragment" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="330dp"
         android:layout_height="50dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+        <android.widget.Button
+            android:id="@+id/btn_showDestination"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:text="목적지 출력 버튼"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/radius"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:elevation="5dp">
+        </android.widget.Button>
+
         <TextView
-            android:layout_width="190dp"
+            android:layout_width="140dp"
             android:layout_height="40dp"
             android:text="피보호자 전화걸기"
             android:textSize="15dp"
@@ -64,11 +73,11 @@
             android:gravity="center"
             android:elevation="5dp">
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_gravity="center">
         <android.widget.Button
             android:id="@+id/ward_btn"
@@ -84,24 +93,5 @@
             android:elevation="5dp">
         </android.widget.Button>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/btn_showDestination"
-        android:layout_width="190dp"
-        android:layout_height="40dp"
-        android:text="피보호자 목적지 확인"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:background="@drawable/radius"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:elevation="5dp">
-    </TextView>
-
-
-
-
-
 
 </LinearLayout>

@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="190dp"
             android:layout_height="40dp"
-            android:text="보호자 등록 화면"
+            android:text="보호자 로그인 화면"
             android:textSize="15dp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -22,6 +22,15 @@
             android:gravity="center"
             android:elevation="8dp">
         </TextView>
+
+        <android.widget.Button
+            android:id="@+id/transform_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/transform" />
     </FrameLayout>
 
     <LinearLayout
