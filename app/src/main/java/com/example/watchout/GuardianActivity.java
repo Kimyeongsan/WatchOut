@@ -48,13 +48,16 @@ import java.util.Locale;
 public class GuardianActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback{
 
     private GoogleMap mMap;
+    private Geocoder geocoder; // 지오코더
     private Marker currentMarker = null;
     Button ward_btn;       // 화면 전환 버튼
+
+    Button temp; //임시test
 
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
+    private static final int UPDATE_INTERVAL_MS = 30000;  // 1초 1000
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -112,6 +115,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
 
 
+        /* 확인했고 일단 동결
 
         //피보호자 목적지 확인하기
         btn_showDestination.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +132,21 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
+*/
+
+        //test
+        //입력테스트 위한 임시 함수
+        temp = (Button)findViewById(R.id.testtrans);
+        temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GuardianActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        //
+
+
 
         // 피보호자 등록 화면
         ward_btn.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +163,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         Log.d(TAG, "onMapReady :");
 
         mMap = googleMap;
+        geocoder = new Geocoder(this);
 
         setDefaultLocation();
 
@@ -184,6 +204,54 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
             public void onMapClick(LatLng latLng) {
 
                 Log.d( TAG, "onMapClick :");
+            }
+        });
+        //피보호자 목적지 확인하기
+        btn_showDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //여기서 메인에서 입력받은 목적지 ->체크완료
+                Log.d("desttest","using DestData from MainActivity : "+destinationMarkerPoint);
+                //
+                String str = destinationMarkerPoint;
+                //테스트 주소
+                //str="명지대학교 자연캠퍼스";
+                List<Address>addressList=null;
+                try {
+                    //지오코딩 을 통한 스트링 내 정보 (주소 지역 장소등) 변환
+                    addressList = geocoder.getFromLocationName(str,5);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                System.out.println(addressList.get(0).toString());
+                // 콤마를 기준으로 split
+                String []splitStr = addressList.get(0).toString().split(",");
+                String address = splitStr[0].substring(splitStr[0].indexOf("\"") + 1,splitStr[0].length() - 2); // 주소
+                System.out.println(address);
+
+                String latitude = splitStr[10].substring(splitStr[10].indexOf("=") + 1); // 위도
+                String longitude = splitStr[12].substring(splitStr[12].indexOf("=") + 1); // 경도
+                System.out.println(latitude);
+                System.out.println(longitude);
+
+                // 좌표(위도, 경도) 생성
+                LatLng point = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                // 마커 생성
+                MarkerOptions mOptions2 = new MarkerOptions();
+                mOptions2.title("search result");
+                mOptions2.snippet(address);
+                mOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                mOptions2.position(point);
+                // 마커 추가
+                mMap.addMarker(mOptions2);
+                // 해당 좌표로 화면 줌
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
+
+
+                //지도에 위치 입력하기
+
+                //
+
             }
         });
     }
