@@ -1,39 +1,36 @@
 package com.example.watchout.Data;
 
 public class GuardianData {
-    public String userUid;   // 시각장애인 UID
-    public String userName;  // 시각장애인 Name
-    public String location;  // 시각장애인 Location 정보
+    private String user_name;    // 사용자 이름
+    private String user_email;   // 사용자 e-mail
+    private String user_password;// 사용자 비밀번호
 
     public GuardianData() { }
 
-    public GuardianData(String userUid, String userName, String location) {
-        this.userUid = userUid;
-        this.userName = userName;
-        this.location = location;
+    public GuardianData(String user_name, String user_email, String user_password) {
+        this.user_name = user_name;
+        this.user_email = user_email;
+        this.user_password = user_password;
     }
 
-    public String getUserUid() {
-        return userUid;
+    public String getUser_Name() {
+        return user_name;
+    }
+    public String getUser_Email() {
+        return user_email;
+    }
+    public String getUser_Password() {
+        return user_password;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUser_Name(String user_name) {
+        this.user_name = user_name;
+    }
+    public void setUser_Email(String user_email) {
+        this.user_email = user_email;
+    }
+    public void setUser_Password(String user_password) {
+        this.user_password = user_password;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }

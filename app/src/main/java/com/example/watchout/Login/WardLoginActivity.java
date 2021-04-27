@@ -26,9 +26,9 @@ public class WardLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loginward);
         getSupportActionBar().hide();
 
-        id = (EditText)findViewById(R.id.Id);
-        name = (EditText)findViewById(R.id.Name);
-        btn = (Button)findViewById(R.id.login_summit);
+        id = (EditText)findViewById(R.id.wardId);
+        name = (EditText)findViewById(R.id.wordName);
+        btn = (Button)findViewById(R.id.ward_apply);
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
 
         loginId = auto.getString("inputId",null);
@@ -46,7 +46,7 @@ public class WardLoginActivity extends AppCompatActivity {
 
 
         if(loginId !=null && loginName != null) {
-            if(loginId.equals("HGD") && loginName.equals("홍길동")) {
+            if(loginId.equals("HG") && loginName.equals("홍길")) {
                 Toast.makeText(WardLoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(WardLoginActivity.this, MainActivity.class);
                 startActivity(intent);

@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("desttest","input dest : "+destination.toString());
                     //
 
-
-
                     tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
 
                     //
