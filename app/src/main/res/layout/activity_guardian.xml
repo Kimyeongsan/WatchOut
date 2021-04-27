@@ -94,23 +94,4 @@
         </android.widget.Button>
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_gravity="center">
-        <android.widget.Button
-            android:id="@+id/guardian_logout"
-            android:layout_width="190dp"
-            android:layout_height="40dp"
-            android:text="로그아웃"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/radius"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:elevation="5dp">
-        </android.widget.Button>
-    </FrameLayout>
-
 </LinearLayout>

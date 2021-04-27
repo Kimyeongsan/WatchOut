@@ -67,4 +67,9 @@
             android:textSize="51sp" />
 
     </LinearLayout>
+    <Button
+        android:id="@+id/test2trans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </LinearLayout>

@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean destCheck = false; //목적지 정보가 입력된경우 true로 상태변경
 
+
+    Button temp2 ; // test
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
+        //test 지우지 마세요 데이터 이걸로 보내고있는중
+        temp2 = (Button)findViewById(R.id.test2trans);
+        temp2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDest = new Intent(MainActivity.this,GuardianActivity.class);
+                intentDest.putExtra("dest",destination.toString());
+                startActivity(intentDest);
+            }
+        });
 
         //버튼연동
         btn1=(Button)findViewById(R.id.btn_Top_left);

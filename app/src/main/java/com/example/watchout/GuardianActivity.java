@@ -23,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.watchout.Data.ManagementData;
-import com.example.watchout.Login.GuardianLoginActivity;
 import com.example.watchout.Login.WardLoginActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -42,7 +40,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,7 +50,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private Marker currentMarker = null;
     Button ward_btn;       // 화면 전환 버튼
-    private FirebaseAuth firebaseAuth;
+
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -140,8 +137,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
-
-        initialize();
     }
 
     @Override
@@ -476,51 +471,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 break;
         }
     }
-    private void initialize() {
-        Button btnLogOut, btnSignOut;
-        TextView userNameTV;
 
-        btnLogOut = findViewById(R.id.guardian_logout);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-                Intent intent = new Intent(
-                        getApplicationContext(), GuardianLoginActivity.class);
-
-                // 데이터 초기화 및 생성
-                ManagementData.getInstance().delAllData();
-
-                startActivity(intent);
-
-            }
-        });
-
-//        btnSignOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(
-//                        getContext(), LoginActivity.class);
-//
-//                // 데이터 초기화 및 생성
-//                ManagementData.getInstance().delAllData();
-//
-//                startActivity(intent);
-//
-//                signOut();
-//            }
-//        });
-    }
-    private void logOut () {
-        firebaseAuth.getInstance().signOut();
-    }
-
-//    private void signOut () {
-//        firebaseAuth.getCurrentUser().delete();
-//    }
 
 
 }
