@@ -79,9 +79,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     //목적지 구현부분//
     TextView btn_showDestination;
     private String destinationMarkerPoint; //목적지 받아올 스트링 변수
-    MarkerOptions myMarker;
-    GoogleMap map;
-    //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,20 +116,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
 
 
-        /* 확인했고 일단 동결
-        //피보호자 목적지 확인하기
-        btn_showDestination.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //여기서 메인에서 입력받은 목적지 ->체크완료
-                Log.d("desttest","using DestData from MainActivity : "+destinationMarkerPoint);
-                //
-                //지도에 위치 입력하기
-                //
-            }
-        });
-*/
-
         //test
         //입력테스트 위한 임시 함수
         temp = (Button)findViewById(R.id.testtrans);
@@ -142,9 +126,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
-        //
-
-
 
         // 피보호자 등록 화면
         ward_btn.setOnClickListener(new View.OnClickListener() {
@@ -247,11 +228,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 // 해당 좌표로 화면 줌
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point,15));
 
-
-                //지도에 위치 입력하기
-
-                //
-
             }
         });
     }
@@ -313,9 +289,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -362,7 +335,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         } catch (IllegalArgumentException illegalArgumentException) {
             Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
             return "잘못된 GPS 좌표";
-
         }
 
         if (addresses == null || addresses.size() == 0) {
@@ -402,9 +374,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void setDefaultLocation() {
-
-
-        //디폴트 위치, Seoul
         LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
@@ -421,13 +390,9 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
         mMap.moveCamera(cameraUpdate);
-
     }
 
-
-    //여기부터는 런타임 퍼미션 처리을 위한 메소드들
     private boolean checkPermission() {
-
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -437,9 +402,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
             return true;
         }
-
         return false;
-
     }
 
     @Override
@@ -457,7 +420,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                     break;
                 }
             }
-
 
             if ( check_result ) {
                 startLocationUpdates();
@@ -493,7 +455,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-    //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GuardianActivity.this);
@@ -565,6 +526,5 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private void logOut () {
         firebaseAuth.getInstance().signOut();
     }
-
 
 }

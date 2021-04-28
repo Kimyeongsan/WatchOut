@@ -1,32 +1,56 @@
 package com.example.watchout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.watchout.Data.DB_Data;
 import com.example.watchout.Data.GuardianManagement;
-import com.example.watchout.Login.GuardianLoginActivity;
+import com.example.watchout.Data.LocationData;
 import com.example.watchout.Login.WardLoginActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
+        ActivityCompat.OnRequestPermissionsResultCallback {
+
     Intent intent;
     SpeechRecognizer mRecognizer;
     Button btn1, btn2, btn3, btn4; // 화면 타이틀 버튼
@@ -40,11 +64,54 @@ public class MainActivity extends AppCompatActivity {
 
     Button temp2; // test
 
+    private GoogleMap mMap;
+
+    private static final String TAG = "googlemap_example";
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int UPDATE_INTERVAL_MS = 60000;  // 1분
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 30000; // 30초
+
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    boolean needRequest = false;
+
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+    Location mCurrentLocatiion;
+    LatLng currentPosition;
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationRequest locationRequest;
+    private Location location;
+
+    private View mLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
+        //google Map
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        setContentView(R.layout.activity_main);
+
+        mLayout = findViewById(R.id.layout_main);
+
+        locationRequest = new LocationRequest()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL_MS)
+                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+
+
+        LocationSettingsRequest.Builder builder =
+                new LocationSettingsRequest.Builder();
+
+        builder.addLocationRequest(locationRequest);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //permission check
         if (Build.VERSION.SDK_INT >= 23) {
@@ -84,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
+        LocationData locationData = new LocationData();
 
         //목적지 설정 버튼 < 인식, 출력 동시에 되고 있는거 수정해야함>
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -96,30 +164,29 @@ public class MainActivity extends AppCompatActivity {
                     tts.speak(getString(R.string.Guide), TextToSpeech.QUEUE_FLUSH, null);
                 } else if (destCheck == true) {
 
-                    //목적지 인식후 출려될 출력문
-                    // 합치고 출력
-                    //초기화 해줘야함
                     outString.delete(0, outString.length());
-                    //입력된 정보 출력문으로 합치기
                     outString.append(getString(R.string.button_1_1));
                     outString.append(destination);
                     outString.append(getString(R.string.button_1_2));
                     outString.append(getString(R.string.button_1_3));
-                    //
 
                     //목적지 확인 로그
                     Log.d("desttest", "input dest : " + destination.toString());
-                    //
+
+                    locationData.setUser_destination(destination.toString());
+
+                    //firebase 추가
+                    FirebaseDatabase.getInstance().getReference().
+                            child(DB_Data.DB_CHILD_USER_WARD).
+                            child(DB_Data.DB_CHILD_LOCATION).
+                            push().setValue(locationData);
 
                     tts.speak(outString.toString(), TextToSpeech.QUEUE_FLUSH, null);
 
-                    //
                 }
             }
         });
 
-
-        //길게 눌러서 목적지 입력받기
         btn1.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -163,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //로그아웃 함수
-        initialize();
+        logouts();
     }
 
     //stt를 위한 리스너
@@ -193,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
         public void onEndOfSpeech() {
             Toast.makeText(getApplicationContext(), "인식 종료됨", Toast.LENGTH_SHORT).show();
 
-            //
         }
 
         @Override
@@ -204,14 +270,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResults(Bundle results) {
 
-            //ArrayList에 단어를 넣고 textview에 단어를 하나씩 이어주기
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
             for (int i = 0; i < matches.size(); i++) {
                 destination.append(matches.get(i));
             }
-
         }
 
         @Override
@@ -236,8 +300,264 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady :");
+
+        mMap = googleMap;
+
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+
+            startLocationUpdates();
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
+
+                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                        Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS,
+                                PERMISSIONS_REQUEST_CODE);
+                    }
+                }).show();
+
+            } else {
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);
+            }
+        }
+
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                Log.d(TAG, "onMapClick :");
+            }
+        });
+    }
+
+    LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+
+            List<Location> locationList = locationResult.getLocations();
+            LocationData locationData = new LocationData();
+
+            if (locationList.size() > 0) {
+                location = locationList.get(locationList.size() - 1);
+                //location = locationList.get(0);
+
+                currentPosition
+                        = new LatLng(location.getLatitude(), location.getLongitude());
+
+                String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
+                        + " 경도:" + String.valueOf(location.getLongitude());
+
+                locationData.setUser_location(markerSnippet);
+
+                //firebase 추가
+                FirebaseDatabase.getInstance().getReference().
+                        child(DB_Data.DB_CHILD_USER_WARD).
+                        child(DB_Data.DB_CHILD_LOCATION).
+                        push().setValue(locationData);
+
+//                Log.d(TAG, "onLocationResult : " + markerSnippet);
+
+                mCurrentLocatiion = location;
+            }
+        }
+    };
+
+    private void startLocationUpdates() {
+
+        if (!checkLocationServicesStatus()) {
+
+            Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
+            showDialogForLocationServiceSetting();
+        } else {
+
+            int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
+                    hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
+
+                Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
+                return;
+            }
+
+            Log.d(TAG, "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates");
+
+            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+
+            if (checkPermission())
+                mMap.setMyLocationEnabled(true);
+        }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d(TAG, "onStart");
+
+        if (checkPermission()) {
+
+            Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
+            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+            if (mMap != null)
+                mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+
+        if (mFusedLocationClient != null) {
+
+            Log.d(TAG, "onStop : call stopLocationUpdates");
+            mFusedLocationClient.removeLocationUpdates(locationCallback);
+        }
+    }
+
+    public boolean checkLocationServicesStatus() {
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    private boolean checkPermission() {
+
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+
+
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grandResults) {
+
+        if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
+            boolean check_result = true;
+
+            for (int result : grandResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    check_result = false;
+                    break;
+                }
+            }
+
+
+            if (check_result) {
+                startLocationUpdates();
+            } else {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
+
+                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
+                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+
+                            finish();
+                        }
+                    }).show();
+
+                } else {
+
+                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
+                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+
+                            finish();
+                        }
+                    }).show();
+                }
+            }
+
+        }
+    }
+
+    private void showDialogForLocationServiceSetting() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("위치 서비스 비활성화");
+        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
+                + "위치 설정을 수정하실래요?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Intent callGPSSettingIntent
+                        = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.create().show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case GPS_ENABLE_REQUEST_CODE:
+
+                //사용자가 GPS 활성 시켰는지 검사
+                if (checkLocationServicesStatus()) {
+                    if (checkLocationServicesStatus()) {
+                        Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
+
+                        needRequest = true;
+
+                        return;
+                    }
+                }
+                break;
+        }
+    }
+
     //로그아웃
-    private void initialize() {
+    private void logouts() {
         Button btnLogOut;
 
         btnLogOut = findViewById(R.id.ward_logout);
@@ -253,9 +573,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // 데이터 초기화 및 생성
                 GuardianManagement.getInstance().delAllData();
-
                 startActivity(intent);
-
             }
         });
     }
