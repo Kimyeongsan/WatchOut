@@ -13,7 +13,4 @@
 * Realtime Database를 통한 사용자의 위치 공유
 * Google Map을 통한 시각적인 Map 제공
 
-
-### UI
-
 ![readme](./readme.png)
