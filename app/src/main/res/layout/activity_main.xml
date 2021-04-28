@@ -36,6 +36,28 @@
                 android:background="@color/white"
                 android:text="@string/main_button_Top_Right"
                 android:textSize="51sp" />
+
+            <android.widget.Button
+                android:id="@+id/test2trans"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="Test"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/radius"
+                />
+
+            <android.widget.Button
+                android:id="@+id/ward_logout"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:text="로그아웃"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/radius"
+                />
         </FrameLayout>
 
     </LinearLayout>
@@ -67,9 +89,4 @@
             android:textSize="51sp" />
 
     </LinearLayout>
-    <Button
-        android:id="@+id/test2trans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
 </LinearLayout>

@@ -7,46 +7,46 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ManagementData {
-    private static ManagementData mData = new ManagementData();
-    private GuardianData guardianData;                  // 유저 정보
+public class WardManagement {
+    private static WardManagement mData = new WardManagement();
+    private WardData wardData;                  // 유저 정보
 
-    private ManagementData() {
-        guardianData = null;
+    private WardManagement() {
+        wardData = null;
     }
 
-    public static ManagementData getInstance() {
+    public static WardManagement getInstance() {
         return mData;
     }
 
     // 모든 데이터 초기화
     public void delAllData() {
-        guardianData = null;
+        wardData = null;
     }
 
     // UserData 설정
-    public void setGuardianData(GuardianData guardianData) {
-        this.guardianData = guardianData;
+    public void setGuardianData(WardData wardData) {
+        this.wardData = wardData;
     }
 
     // UserData 반환
-    public GuardianData getUserData() {
-        return guardianData;
+    public WardData wardData() {
+        return wardData;
     }
 
     // 디비에 유저 등록
     public static void registerUser(final FirebaseUser user) {
-        ManagementData mData;   // 싱글톤 객체(앱상에서 전반적인 데이터 관리)
+        WardManagement mData;   // 싱글톤 객체(앱상에서 전반적인 데이터 관리)
 
         // 싱글톤 객체에 유저 정보 등록
-        mData = ManagementData.getInstance();
-        mData.setGuardianData(new GuardianData(user.getDisplayName(), user.getEmail(), null));
+        mData = WardManagement.getInstance();
+        mData.setGuardianData(new WardData(user.getDisplayName(), user.getEmail(), null));
 
         // 이미 DB에 존재하는 유저면 화면만 넘기기
-        FirebaseDatabase.getInstance().getReference().child(DB_Data.DB_CHILD_USER_GUARDIAN).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(DB_Data.DB_CHILD_USER_WARD).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GuardianData guardianData;
+                WardData wardData;
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     // Uid를 비교해서 같으면 디비에 등록X
@@ -56,10 +56,10 @@ public class ManagementData {
                 }
 
                 // 유저 정보 생성
-                guardianData = new GuardianData(user.getDisplayName(), user.getEmail(), null);
+                wardData = new WardData(user.getDisplayName(), user.getEmail(), null);
 
                 // DB에 유저 정보 등록
-                insertUserToDatabase(guardianData);
+                insertUserToDatabase(wardData);
             }
 
             @Override
@@ -69,12 +69,12 @@ public class ManagementData {
     }
 
     // 유저 정보를 디비에 등록
-    private static void insertUserToDatabase(GuardianData guardianData) {
+    private static void insertUserToDatabase(WardData wardData) {
         DatabaseReference userRef;
 
-        userRef = FirebaseDatabase.getInstance().getReference().child(DB_Data.DB_CHILD_USER_GUARDIAN).child(guardianData.getUser_Name());
+        userRef = FirebaseDatabase.getInstance().getReference().child(DB_Data.DB_CHILD_USER_WARD).child(wardData.getUser_Name());
 
         // 디비에 유저 생성
-        userRef.setValue(guardianData);
+        userRef.setValue(wardData);
     }
 }

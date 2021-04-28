@@ -16,6 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.watchout.Data.GuardianManagement;
+import com.example.watchout.Login.GuardianLoginActivity;
+import com.example.watchout.Login.WardLoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -24,16 +29,17 @@ import static android.speech.tts.TextToSpeech.ERROR;
 public class MainActivity extends AppCompatActivity {
     Intent intent;
     SpeechRecognizer mRecognizer;
-    Button btn1,btn2,btn3,btn4; // 화면 타이틀 버튼
+    Button btn1, btn2, btn3, btn4; // 화면 타이틀 버튼
     private TextToSpeech tts;
     final int PERMISSION = 1;
     StringBuilder destination = new StringBuilder(" "); //입력받은 목적지 정보 임시 저장
     StringBuilder outString = new StringBuilder(" "); //출력문
 
     public boolean destCheck = false; //목적지 정보가 입력된경우 true로 상태변경
+    private FirebaseAuth firebaseAuth;
 
+    Button temp2; // test
 
-    Button temp2 ; // test
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,27 +53,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //test 지우지 마세요 데이터 이걸로 보내고있는중
-        temp2 = (Button)findViewById(R.id.test2trans);
+        temp2 = (Button) findViewById(R.id.test2trans);
         temp2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentDest = new Intent(MainActivity.this,GuardianActivity.class);
-                intentDest.putExtra("dest",destination.toString());
+                Intent intentDest = new Intent(MainActivity.this, GuardianActivity.class);
+                intentDest.putExtra("dest", destination.toString());
                 startActivity(intentDest);
             }
         });
 
         //버튼연동
-        btn1=(Button)findViewById(R.id.btn_Top_left);
-        btn2=(Button)findViewById(R.id.btn_Top_Right);
-        btn3=(Button)findViewById(R.id.btn_Bottom_Left);
-        btn4=(Button)findViewById(R.id.btn_Bottom_Right);
+        btn1 = (Button) findViewById(R.id.btn_Top_left);
+        btn2 = (Button) findViewById(R.id.btn_Top_Right);
+        btn3 = (Button) findViewById(R.id.btn_Bottom_Left);
+        btn4 = (Button) findViewById(R.id.btn_Bottom_Right);
 
         //tts 초기화
-        tts =new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status!=ERROR){
+                if (status != ERROR) {
                     tts.setLanguage(Locale.KOREAN);
                 }
             }
@@ -75,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         //stt 준비
         intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
 
         //목적지 설정 버튼 < 인식, 출력 동시에 되고 있는거 수정해야함>
@@ -85,15 +91,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //destcheck default = false
-                if(destCheck==false){
+                if (destCheck == false) {
                     //초기 가이드
-                    tts.speak(getString(R.string.Guide),TextToSpeech.QUEUE_FLUSH,null);
-                }else if(destCheck==true){
+                    tts.speak(getString(R.string.Guide), TextToSpeech.QUEUE_FLUSH, null);
+                } else if (destCheck == true) {
 
                     //목적지 인식후 출려될 출력문
                     // 합치고 출력
                     //초기화 해줘야함
-                    outString.delete(0,outString.length());
+                    outString.delete(0, outString.length());
                     //입력된 정보 출력문으로 합치기
                     outString.append(getString(R.string.button_1_1));
                     outString.append(destination);
@@ -102,16 +108,15 @@ public class MainActivity extends AppCompatActivity {
                     //
 
                     //목적지 확인 로그
-                    Log.d("desttest","input dest : "+destination.toString());
+                    Log.d("desttest", "input dest : " + destination.toString());
                     //
 
-                    tts.speak(outString.toString(),TextToSpeech.QUEUE_FLUSH,null);
+                    tts.speak(outString.toString(), TextToSpeech.QUEUE_FLUSH, null);
 
                     //
                 }
             }
         });
-
 
 
         //길게 눌러서 목적지 입력받기
@@ -120,18 +125,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
 
                 //목적지 초기화
-                destination.delete(0,destination.length());
+                destination.delete(0, destination.length());
 
                 //인식 시작
-                mRecognizer=SpeechRecognizer.createSpeechRecognizer(getBaseContext());
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getBaseContext());
                 mRecognizer.setRecognitionListener(listener);
                 mRecognizer.startListening(intent);
                 //인식 종료
 
 
-
                 //목적지 입력 완료
-                destCheck=true;
+                destCheck = true;
                 //
                 return false;
             }
@@ -140,31 +144,33 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tts.speak(getString(R.string.button_2_1),TextToSpeech.QUEUE_FLUSH,null);
+                tts.speak(getString(R.string.button_2_1), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tts.speak(getString(R.string.button_3_1),TextToSpeech.QUEUE_FLUSH,null);
+                tts.speak(getString(R.string.button_3_1), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tts.speak(getString(R.string.button_4_1),TextToSpeech.QUEUE_FLUSH,null);
+                tts.speak(getString(R.string.button_4_1), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
-
+        //로그아웃 함수
+        initialize();
     }
+
     //stt를 위한 리스너
     private RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
-            Toast.makeText(getApplicationContext(),"음성 인식 시작",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "음성 인식 시작", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -185,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onEndOfSpeech() {
-            Toast.makeText(getApplicationContext(),"인식 종료됨",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "인식 종료됨", Toast.LENGTH_SHORT).show();
 
             //
         }
@@ -199,10 +205,10 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle results) {
 
             //ArrayList에 단어를 넣고 textview에 단어를 하나씩 이어주기
-            ArrayList<String> matches=
+            ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-            for(int i = 0; i< matches.size();i++){
+            for (int i = 0; i < matches.size(); i++) {
                 destination.append(matches.get(i));
             }
 
@@ -223,11 +229,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(tts!=null){
+        if (tts != null) {
             tts.stop();
             tts.shutdown();
-            tts=null;
+            tts = null;
         }
+    }
+
+    //로그아웃
+    private void initialize() {
+        Button btnLogOut;
+
+        btnLogOut = findViewById(R.id.ward_logout);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+                Intent intent = new Intent(
+                        getApplicationContext(), WardLoginActivity.class);
+
+                // 데이터 초기화 및 생성
+                GuardianManagement.getInstance().delAllData();
+
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    private void logOut() {
+        firebaseAuth.getInstance().signOut();
     }
 
 }

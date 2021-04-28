@@ -23,9 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.watchout.Data.ManagementData;
+import com.example.watchout.Data.GuardianManagement;
 import com.example.watchout.Login.GuardianLoginActivity;
-import com.example.watchout.Login.WardLoginActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -555,19 +554,16 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                         getApplicationContext(), GuardianLoginActivity.class);
 
                 // 데이터 초기화 및 생성
-                ManagementData.getInstance().delAllData();
+                GuardianManagement.getInstance().delAllData();
 
                 startActivity(intent);
 
             }
         });
     }
+
     private void logOut () {
         firebaseAuth.getInstance().signOut();
-    }
-
-    private void signOut () {
-        firebaseAuth.getCurrentUser().delete();
     }
 
 

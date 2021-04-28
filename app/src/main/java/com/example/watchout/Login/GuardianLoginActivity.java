@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.watchout.Data.GuardianData;
-import com.example.watchout.Data.ManagementData;
+import com.example.watchout.Data.GuardianManagement;
 import com.example.watchout.GuardianActivity;
 import com.example.watchout.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +42,6 @@ public class GuardianLoginActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_loginguardian);
         getSupportActionBar().hide();
 
-//        id = findViewById(R.id.sign_up_id);
         name = findViewById(R.id.sign_up_id);
         emailId = findViewById(R.id.sign_up_email);
         passwd = findViewById(R.id.sign_up_pwd);
@@ -61,7 +60,7 @@ public class GuardianLoginActivity extends AppCompatActivity implements View.OnC
         transform_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GuardianLoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), WardLoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -71,12 +70,12 @@ public class GuardianLoginActivity extends AppCompatActivity implements View.OnC
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    ManagementData mData;
+                    GuardianManagement mData;
 
                     Toast.makeText(GuardianLoginActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
 
                     // 앱 상에서 전반적인 유저 데이터 저장
-                    mData = ManagementData.getInstance();
+                    mData = GuardianManagement.getInstance();
                     mData.setGuardianData(new GuardianData(user.getDisplayName(), user.getEmail(), null));
 
                     Intent I = new Intent(GuardianLoginActivity.this, GuardianActivity.class);
@@ -119,7 +118,7 @@ public class GuardianLoginActivity extends AppCompatActivity implements View.OnC
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()) {
-                                                        ManagementData.registerUser(user);
+                                                        GuardianManagement.registerUser(user);
                                                     }
                                                 }
                                             });
@@ -153,10 +152,10 @@ public class GuardianLoginActivity extends AppCompatActivity implements View.OnC
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            ManagementData mData;
+                            GuardianManagement mData;
 
                             // 앱 상에서 전반적인 유저 데이터 저장
-                            mData = ManagementData.getInstance();
+                            mData = GuardianManagement.getInstance();
                             mData.setGuardianData(new GuardianData(user.getDisplayName(), user.getEmail(), null));
 
                             startActivity(new Intent(GuardianLoginActivity.this, GuardianActivity.class));

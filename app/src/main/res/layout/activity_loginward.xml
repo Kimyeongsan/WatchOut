@@ -37,13 +37,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/ward_radius">
+            android:layout_margin="15dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/wardId"
+                android:id="@+id/sign_up_id"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@drawable/ward_radius"
@@ -56,11 +56,25 @@
             android:layout_height="70dp"
             android:layout_margin="15dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/wordName"
+                android:id="@+id/sign_up_email"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@drawable/ward_radius"
-                android:hint="Password">
+                android:hint="Email">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_margin="15dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sign_up_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/ward_radius"
+                android:hint="Passward">
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -72,7 +86,7 @@
         android:layout_marginTop="10dp">
 
         <android.widget.Button
-            android:id="@+id/ward_apply"
+            android:id="@+id/sign_up_btn"
             android:layout_width="90dp"
             android:layout_height="40dp"
             android:text="등록"

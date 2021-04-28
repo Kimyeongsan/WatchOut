@@ -1,24 +1,43 @@
 package com.example.watchout.Login;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.watchout.Data.GuardianData;
+import com.example.watchout.Data.GuardianManagement;
+import com.example.watchout.Data.WardData;
+import com.example.watchout.Data.WardManagement;
+import com.example.watchout.GuardianActivity;
 import com.example.watchout.MainActivity;
 import com.example.watchout.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class WardLoginActivity extends AppCompatActivity {
-    EditText id, name;
-    Button btn;
-    String loginId, loginName;
+public class WardLoginActivity extends AppCompatActivity implements View.OnClickListener{
+    private static final String TAG = "WardLoginActivity";
+
+    public EditText id, name, emailId, passwd;
+    private Button btnSignUp;
     Button transform_btn;
+
+    // 추가 코드
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference myRef;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +45,18 @@ public class WardLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loginward);
         getSupportActionBar().hide();
 
-        id = (EditText)findViewById(R.id.wardId);
-        name = (EditText)findViewById(R.id.wordName);
-        btn = (Button)findViewById(R.id.ward_apply);
-        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        name = findViewById(R.id.sign_up_id);
+        emailId = findViewById(R.id.sign_up_email);
+        passwd = findViewById(R.id.sign_up_pwd);
 
-        loginId = auto.getString("inputId",null);
-        loginName = auto.getString("inputPwd",null);
+        btnSignUp = findViewById(R.id.sign_up_btn);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
+        btnSignUp.setOnClickListener(this);
 
         transform_btn= findViewById(R.id.transform_btn);
         // 화면전환 버튼
@@ -44,36 +68,121 @@ public class WardLoginActivity extends AppCompatActivity {
             }
         });
 
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    WardManagement mData;
 
-        if(loginId !=null && loginName != null) {
-            if(loginId.equals("HG") && loginName.equals("홍길")) {
-                Toast.makeText(WardLoginActivity.this, loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(WardLoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                    Toast.makeText(WardLoginActivity.this, "User logged in ", Toast.LENGTH_SHORT).show();
+
+                    // 앱 상에서 전반적인 유저 데이터 저장
+                    mData = WardManagement.getInstance();
+                    mData.setGuardianData(new WardData(user.getDisplayName(), user.getEmail(), null));
+
+                    Intent I = new Intent(WardLoginActivity.this, MainActivity.class);
+                    startActivity(I);
+                } else {
+                    Toast.makeText(WardLoginActivity.this, "Login to continue", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        String emailID = emailId.getText().toString();
+        String paswd = passwd.getText().toString();
+        String userName = name.getText().toString();
+
+        if (v.getId() == R.id.sign_up_btn) {
+            if (!userName.equals("") && !emailID.equals("") && !paswd.equals("")) {
+                firebaseAuth.createUserWithEmailAndPassword(emailID, paswd)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    final FirebaseUser user;
+                                    UserProfileChangeRequest profileUpdate;
+
+                                    profileUpdate = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(userName)
+                                            .build();
+
+                                    user = firebaseAuth.getCurrentUser();
+                                    user.updateProfile(profileUpdate)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()) {
+                                                        WardManagement.registerUser(user);
+                                                    }
+                                                }
+                                            });
+
+                                    toastMessage("New Information has been saved.");
+
+                                    name.setText("");
+                                    emailId.setText("");
+                                    passwd.setText("");
+                                }
+                            }
+                        });
+            } else if (emailID.isEmpty()) {
+                emailId.setError("Provide your Email first!");
+                emailId.requestFocus();
+
+            } else if (paswd.isEmpty()) {
+                passwd.setError("Set your password");
+                passwd.requestFocus();
+
+            } else if (emailID.isEmpty() && paswd.isEmpty()) {
+                Toast.makeText(WardLoginActivity.this, "Fields Empty!", Toast.LENGTH_SHORT).show();
+
+            } else if (!(emailID.isEmpty() && paswd.isEmpty())) {
+                firebaseAuth.createUserWithEmailAndPassword(emailID, paswd).addOnCompleteListener(WardLoginActivity.this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(WardLoginActivity.this.getApplicationContext(),
+                                    "SignUp unsuccessful: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            WardManagement mData;
+
+                            // 앱 상에서 전반적인 유저 데이터 저장
+                            mData = WardManagement.getInstance();
+                            mData.setGuardianData(new WardData(user.getDisplayName(), user.getEmail(), null));
+
+                            startActivity(new Intent(WardLoginActivity.this, MainActivity.class));
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(WardLoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         }
+    }
 
-        else if(loginId == null && loginName == null){
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (id.getText().toString().equals("HGD") && name.getText().toString().equals("홍길동")) {
-                        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
 
-                        SharedPreferences.Editor autoLogin = auto.edit();
-                        autoLogin.putString("inputId", id.getText().toString());
-                        autoLogin.putString("inputPwd", name.getText().toString());
-
-                        autoLogin.commit();
-                        Toast.makeText(WardLoginActivity.this, id.getText().toString()+"님 환영합니다.", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WardLoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            });
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
+
 }
