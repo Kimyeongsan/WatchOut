@@ -283,6 +283,11 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
             List<Location> locationList = locationResult.getLocations();
 
+
+            ///작업1 사용자 위치로 바꾸기
+            //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
+            //현재 위치에 마커 생성하고 이동
+
             if (locationList.size() > 0) {
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
@@ -297,9 +302,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
 
-                ///작업1 사용자 위치로 바꾸기
-                //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
-                //현재 위치에 마커 생성하고 이동
+
                 setCurrentLocation(location, markerTitle, markerSnippet);
 
                 mCurrentLocatiion = location;
