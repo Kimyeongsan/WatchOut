@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int UPDATE_INTERVAL_MS = 60000;  // 1분
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 30000; // 30초
+    private static final int UPDATE_INTERVAL_MS = 1000;  // 1초 1000
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     boolean needRequest = false;
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         //로그아웃 함수
-        logouts();
+        logOuts();
     }
 
     //stt를 위한 리스너
@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         child(DB_Data.DB_CHILD_LOCATION).
                         push().setValue(locationData);
 
-//                Log.d(TAG, "onLocationResult : " + markerSnippet);
+                Log.d(TAG, "onLocationResult : " + markerSnippet);
 
                 mCurrentLocatiion = location;
             }
@@ -557,7 +557,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //로그아웃
-    private void logouts() {
+    private void logOuts() {
         Button btnLogOut;
 
         btnLogOut = findViewById(R.id.ward_logout);

@@ -30,7 +30,7 @@ public class WardManagement {
     }
 
     // UserData 반환
-    public WardData wardData() {
+    public WardData getWardData() {
         return wardData;
     }
 
