@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.watchout.Data.DB_Data;
 import com.example.watchout.Data.GuardianManagement;
 import com.example.watchout.Login.GuardianLoginActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +43,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -80,6 +86,11 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     TextView btn_showDestination;
     private String destinationMarkerPoint; //목적지 받아올 스트링 변수
 
+    //DBtestString
+    public String testdatabaseString;//받은스트링
+    public String testdatabaseString2;//자른스트링
+    public String testdatabaseString3;//최종자른스트링
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,10 +122,44 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         btn_showDestination=findViewById(R.id.btn_showDestination);
 
 
+
+        //작업파트2(사용자의 목적지 정보 받아오기)
+        //사용자의 목적지 정보 받아와서 destinationMarkerPoint여기에 넣어주기
+        //이부분을 인텐트 받는게 아니라 디비에서 받아오는걸로 수정하면됨
         Intent intentDest = getIntent();//날아오는 인텐트 받기
+        /*
         destinationMarkerPoint=intentDest.getStringExtra("dest");
         Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
 
+         */
+
+        //디비에서 받기
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Dest2");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object value = snapshot.getValue(Object.class);
+                testdatabaseString=value.toString();
+
+                //가라컷팅식
+                testdatabaseString2= testdatabaseString.substring(18);
+                testdatabaseString3=testdatabaseString2.substring(0,testdatabaseString2.length()-1);
+
+
+                Log.d("desttest","CutdatafromDB : "+testdatabaseString3);
+                //데이터베이스에서 전달 및체크완료
+
+                destinationMarkerPoint=testdatabaseString3;//목적지 정보 실행
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//디비에서 받기
 
         //test
         //입력테스트 위한 임시 함수
@@ -195,8 +240,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 Log.d("desttest","using DestData from MainActivity : "+destinationMarkerPoint);
                 //
                 String str = destinationMarkerPoint;
-                //테스트 주소
-                //str="명지대학교 자연캠퍼스";
+
                 List<Address>addressList=null;
                 try {
                     //지오코딩 을 통한 스트링 내 정보 (주소 지역 장소등) 변환
@@ -252,6 +296,9 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
+
+                ///작업1 사용자 위치로 바꾸기
+                //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location, markerTitle, markerSnippet);
 

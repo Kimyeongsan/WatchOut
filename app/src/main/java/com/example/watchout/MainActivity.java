@@ -40,6 +40,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int UPDATE_INTERVAL_MS = 1000;  // 1초 1000
+    private static final int UPDATE_INTERVAL_MS = 30000;  // 1초 1000
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -175,11 +176,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     locationData.setUser_destination(destination.toString());
 
-                    //firebase 추가
+                    /*
+                    //firebase 추가2 사용자의 목적지 데이터 올리는부분
                     FirebaseDatabase.getInstance().getReference().
                             child(DB_Data.DB_CHILD_USER_WARD).
-                            child(DB_Data.DB_CHILD_LOCATION).
-                            push().setValue(locationData);
+                            child(DB_Data.DB_CHILD_DEST).push().setValue(locationData);
+
+                     */
+
+                    //파베 올리는거 변경 테스트 이거쓸꺼임 이걸로 올린 데이터 쓰겠음
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Dest2");
+                    myRef.setValue(locationData);
 
                     tts.speak(outString.toString(), TextToSpeech.QUEUE_FLUSH, null);
 
@@ -366,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 locationData.setUser_location(markerSnippet);
 
-                //firebase 추가
+                //firebase 추가1 사용자 실시간 위치 보내는 부분
                 FirebaseDatabase.getInstance().getReference().
                         child(DB_Data.DB_CHILD_USER_WARD).
                         child(DB_Data.DB_CHILD_LOCATION).
