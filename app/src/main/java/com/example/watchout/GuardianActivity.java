@@ -197,7 +197,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
         //
-
+/*
         //test
         //입력테스트 위한 임시 함수
         temp = (Button)findViewById(R.id.testtrans);
@@ -208,6 +208,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
+
+ */
 
         // 피보호자 등록 화면
         ward_btn.setOnClickListener(new View.OnClickListener() {
