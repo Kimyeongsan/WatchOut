@@ -85,6 +85,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private LocationRequest locationRequest;
     private Location location;
     private View mLayout;
+    TextView currentlocation;
 
     //목적지 구현부분//
     TextView btn_showDestination;
@@ -109,7 +110,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_guardian);
-
+        currentlocation = findViewById(R.id.btn_currentLocation);
         mLayout = findViewById(R.id.layout_main);
 
         locationRequest = new LocationRequest()
@@ -217,8 +218,13 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
+
         initialize();
     }
+
+
+
+
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
@@ -303,6 +309,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 mOptions2.snippet(address);
                 mOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 mOptions2.position(point);
+
                 // 마커 추가
                 mMap.addMarker(mOptions2);
                 // 해당 좌표로 화면 줌
@@ -310,6 +317,33 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
+
+        //현재위치 마커 찍기
+        currentlocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("marker","버튼 돌아는 가는중 : "+ " ");
+                MarkerOptions currentmOption = new MarkerOptions();
+                currentmOption.title("currentLocation");
+                Log.d("marker","위도 경도 그대로 오는지 테스트 :"+locationString3);
+
+                String lan = locationString3.substring(0,10);
+                String lut = locationString3.substring(14);
+                Log.d("marker","위도 :"+lan);
+                Log.d("marker","경도 :"+lut);
+                //존나 잘짤랐어 기특해
+               currentmOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                // 좌표(위도, 경도) 생성
+                LatLng point = new LatLng(Double.parseDouble(lan), Double.parseDouble(lut));
+
+                currentmOption.position(point);
+                mMap.addMarker(currentmOption);
+                //포지션 넣기
+                //추가하기
+
+            }
+        });
+
     }
 
 

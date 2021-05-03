@@ -12,6 +12,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
         <TextView
+            android:id="@+id/btn_currentLocation"
             android:layout_width="190dp"
             android:layout_height="40dp"
             android:text="피보호자의 현 위치"
