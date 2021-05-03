@@ -48,6 +48,9 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_DEST;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int UPDATE_INTERVAL_MS = 30000;  // 1초 1000
+    private static final int UPDATE_INTERVAL_MS = 10000;  // 1초 1000
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     //파베 올리는거 변경 테스트 이거쓸꺼임 이걸로 올린 데이터 쓰겠음
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("Dest2");
+                    DatabaseReference myRef = database.getReference(DB_CHILD_DEST);
                     myRef.setValue(locationData);
 
                     tts.speak(outString.toString(), TextToSpeech.QUEUE_FLUSH, null);
@@ -374,11 +377,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 locationData.setUser_location(markerSnippet);
 
-                //firebase 추가1 사용자 실시간 위치 보내는 부분
+                //firebase 위치 로그
                 FirebaseDatabase.getInstance().getReference().
                         child(DB_Data.DB_CHILD_USER_WARD).
                         child(DB_Data.DB_CHILD_LOCATION).
                         push().setValue(locationData);
+
+                //파베이걸로 바꿈
+                //파베 올리는거 변경 테스트 이거쓸꺼임 이걸로 올린 데이터 쓰겠음
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef2 = database.getReference(DB_CHILD_CURRENTLOCATION);
+                myRef2.setValue(locationData);
+
+
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 

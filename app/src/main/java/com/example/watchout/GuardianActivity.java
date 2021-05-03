@@ -53,6 +53,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_DEST;
+
 public class GuardianActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback{
 
     private GoogleMap mMap;
@@ -87,9 +91,14 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private String destinationMarkerPoint; //목적지 받아올 스트링 변수
 
     //DBtestString
+    //목적지
     public String testdatabaseString;//받은스트링
     public String testdatabaseString2;//자른스트링
     public String testdatabaseString3;//최종자른스트링
+    //실시간
+    public String locationString;
+    public String locationString2;
+    public String locationString3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,12 +131,12 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         btn_showDestination=findViewById(R.id.btn_showDestination);
 
 
-
+/*
         //작업파트2(사용자의 목적지 정보 받아오기)
         //사용자의 목적지 정보 받아와서 destinationMarkerPoint여기에 넣어주기
         //이부분을 인텐트 받는게 아니라 디비에서 받아오는걸로 수정하면됨
         Intent intentDest = getIntent();//날아오는 인텐트 받기
-        /*
+
         destinationMarkerPoint=intentDest.getStringExtra("dest");
         Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
 
@@ -135,7 +144,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         //디비에서 받기
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Dest2");
+        DatabaseReference myRef = database.getReference(DB_CHILD_DEST);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -159,7 +168,34 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
-//디비에서 받기
+//디비에서 받기1
+
+
+        ///작업1 사용자 위치로 바꾸기
+        //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
+        //현재 위치에 마커 생성하고 이동
+        //디비에서 받아오기
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();//앞에서 선언함
+        DatabaseReference myRef2 = database.getReference(DB_CHILD_CURRENTLOCATION);
+        myRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object value = snapshot.getValue(Object.class);
+                locationString=value.toString();
+                //가라컷팅식
+                locationString2= locationString.substring(18);
+                locationString3=locationString2.substring(0,locationString2.length()-1);
+
+                Log.d("locationDB","datafromDB : "+locationString);
+                Log.d("locationDB","CutdatafromDB : "+locationString3);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //
 
         //test
         //입력테스트 위한 임시 함수
@@ -276,6 +312,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         });
     }
 
+
+
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -284,9 +322,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
             List<Location> locationList = locationResult.getLocations();
 
 
-            ///작업1 사용자 위치로 바꾸기
-            //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
-            //현재 위치에 마커 생성하고 이동
+
 
             if (locationList.size() > 0) {
                 location = locationList.get(locationList.size() - 1);
@@ -294,10 +330,14 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
-
+//작업포인트
                 String markerTitle = getCurrentAddress(currentPosition);
+                /*
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
+
+                 */
+                String markerSnippet=locationString3;
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
