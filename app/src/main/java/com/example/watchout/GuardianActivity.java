@@ -56,6 +56,8 @@ import java.util.Locale;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_DEST;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_EME;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_GOAL;
 
 public class GuardianActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback{
 
@@ -101,6 +103,11 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     public String locationString2;
     public String locationString3;
 
+                            //도착정보
+    public String Goaltext;
+                            //긴급정보
+    public String Emetext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +150,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
          */
 
-        //디비에서 받기
+        //디비에서 목적지 정보 받기
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(DB_CHILD_DEST);
         myRef.addValueEventListener(new ValueEventListener() {
@@ -161,9 +168,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 //데이터베이스에서 전달 및체크완료
 
                 destinationMarkerPoint=testdatabaseString3;//목적지 정보 실행
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -172,11 +177,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 //디비에서 받기1
 
 
-        ///작업1 사용자 위치로 바꾸기
-        //디비에서 사용자 ward 데이터 받은걸로 253번라인 부분 수정하기
-        //현재 위치에 마커 생성하고 이동
-        //디비에서 받아오기
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();//앞에서 선언함
+//디비에서 받기 2 사용자 현재위치 받기
         DatabaseReference myRef2 = database.getReference(DB_CHILD_CURRENTLOCATION);
         myRef2.addValueEventListener(new ValueEventListener() {
             @Override
@@ -196,20 +197,57 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
             }
         });
-        //
-/*
-        //test
-        //입력테스트 위한 임시 함수
-        temp = (Button)findViewById(R.id.testtrans);
-        temp.setOnClickListener(new View.OnClickListener() {
+        //디비서 받기 2 끝
+
+        //디비서 받기 3 도착 정보 받기
+        DatabaseReference myGoal = database.getReference(DB_CHILD_GOAL);
+        myGoal.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GuardianActivity.this, MainActivity.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object value = snapshot.getValue(Object.class);
+                Goaltext=value.toString();
+                Log.d("goal","database value  : "+Goaltext);
+                //디비3정보 도착여부 확인 //작업3 진동과 알림넣기
+                if(Goaltext.equals("true")){
+                    Toast.makeText(GuardianActivity.this, "도착", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //디비받기 3 끝
+
+        //디비받기4
+        DatabaseReference myEme = database.getReference(DB_CHILD_EME);
+        myEme.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object value = snapshot.getValue(Object.class);
+                Emetext=value.toString();
+                Log.d("Eme","database value  : "+Emetext);
+                //디비3정보 도착여부 확인 //작업3 진동과 알림넣기
+                if(Emetext.equals("true")){
+
+                    Toast.makeText(GuardianActivity.this, "긴급상황 발생", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
- */
+        //
+
+
+
+
 
         // 피보호자 등록 화면
         ward_btn.setOnClickListener(new View.OnClickListener() {

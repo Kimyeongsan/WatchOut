@@ -52,6 +52,9 @@ import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_DEST;
 
+import static com.example.watchout.Data.DB_Data.DB_CHILD_EME;
+import static com.example.watchout.Data.DB_Data.DB_CHILD_GOAL;
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
-        //test 지우지 마세요 데이터 이걸로 보내고있는중
+        //지워도 됨 근데 test편하게 하는 버튼
         temp2 = (Button) findViewById(R.id.test2trans);
         temp2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LocationData locationData = new LocationData();
 
-        //목적지 설정 버튼 < 인식, 출력 동시에 되고 있는거 수정해야함>
+        //목적지 설정 버튼
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,6 +214,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mRecognizer.startListening(intent);
                 //인식 종료
 
+                //도착여부조건발송 미도착
+                String GoalMessage ="false";
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myGoal = database.getReference(DB_CHILD_GOAL);
+                myGoal.setValue(GoalMessage);
+                Log.d("goal","database upload BTN1  : "+GoalMessage);
+                // 미도착
+                //긴급상황 아님
+                String EmeMessage="false";
+                DatabaseReference myEme = database.getReference(DB_CHILD_EME);
+                myEme.setValue(EmeMessage);
+                Log.d("eme","database upload BTN4  : "+EmeMessage);
+                //
 
                 //목적지 입력 완료
                 destCheck = true;
@@ -223,6 +239,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 tts.speak(getString(R.string.button_2_1), TextToSpeech.QUEUE_FLUSH, null);
+
+                //목적지 도착을 위한 데이터 베이스 신호 전송
+                String GoalMessage ="true";
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myGoal = database.getReference(DB_CHILD_GOAL);
+                myGoal.setValue(GoalMessage);
+                Log.d("goal","database upload value  : "+GoalMessage);
+
+                //긴급상황 아님신호
+                String EmeMessage="false";
+                DatabaseReference myEme = database.getReference(DB_CHILD_EME);
+                myEme.setValue(EmeMessage);
+                Log.d("eme","database upload BTN4  : "+EmeMessage);
+                //
             }
         });
 
@@ -230,6 +260,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 tts.speak(getString(R.string.button_3_1), TextToSpeech.QUEUE_FLUSH, null);
+                //도착여부조건발송 미도착
+                String GoalMessage ="false";
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myGoal = database.getReference(DB_CHILD_GOAL);
+                myGoal.setValue(GoalMessage);
+                Log.d("goal","database upload BTN3  : "+GoalMessage);
+                // 미도착
+
+                //긴급상황 아님
+                String EmeMessage="false";
+                DatabaseReference myEme = database.getReference(DB_CHILD_EME);
+                myEme.setValue(EmeMessage);
+                Log.d("eme","database upload BTN4  : "+EmeMessage);
+                //
             }
         });
 
@@ -237,6 +281,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 tts.speak(getString(R.string.button_4_1), TextToSpeech.QUEUE_FLUSH, null);
+                //도착여부조건발송 미도착
+                String GoalMessage ="false";
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myGoal = database.getReference(DB_CHILD_GOAL);
+                myGoal.setValue(GoalMessage);
+                Log.d("goal","database upload BTN4  : "+GoalMessage);
+                // 미도착
+
+                //긴급상황 발생 전송
+                String EmeMessage="true";
+                DatabaseReference myEme = database.getReference(DB_CHILD_EME);
+                myEme.setValue(EmeMessage);
+                Log.d("eme","database upload BTN4  : "+EmeMessage);
+                //
             }
         });
 
@@ -383,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         child(DB_Data.DB_CHILD_LOCATION).
                         push().setValue(locationData);
 
-                //파베이걸로 바꿈
+                //파베이걸로 바꿈 위에 코드는 이동기록 로그고 예는 실시간 위치
                 //파베 올리는거 변경 테스트 이거쓸꺼임 이걸로 올린 데이터 쓰겠음
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef2 = database.getReference(DB_CHILD_CURRENTLOCATION);
