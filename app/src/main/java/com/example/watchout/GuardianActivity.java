@@ -1,6 +1,9 @@
 package com.example.watchout;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -21,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.watchout.Data.DB_Data;
@@ -102,10 +107,15 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     public String locationString2;
     public String locationString3;
 
-                            //도착정보
-    public String Goaltext;
-                            //긴급정보
-    public String Emetext;
+    //알림기능 구현관련
+    public String Goaltext;//도착정보 알림용
+    public String Emetext;//긴급정보 알림용
+    NotificationManager manager;//알람바 구현을 위한것
+    NotificationCompat.Builder Nbuilder;//알람바 구현을 위한것2
+    private String CHANNEL_ID="channel1";
+    private String CHANNEL_NAME="Channel1";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +219,10 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 //디비3정보 도착여부 확인 //작업3 진동과 알림넣기
                 if(Goaltext.equals("true")){
                     Toast.makeText(GuardianActivity.this, "도착", Toast.LENGTH_LONG).show();
+                    showNotificationGoal();
                 }
+                //여기에 알람바 구현
+                //
 
             }
 
@@ -248,6 +261,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
 
 
+
+
         // 피보호자 등록 화면
         ward_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,6 +275,33 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         initialize();
     }
+
+    //도착 알람바 코드
+    public void showNotificationGoal(){
+        Nbuilder = null;
+        manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        //버전별 나눔
+        //버전 오레오 이상일 경우
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            manager.createNotificationChannel(
+                    new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+            );
+
+            Nbuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
+
+            //하위 버전일 경우
+        }else{
+            Nbuilder = new NotificationCompat.Builder(this); }
+
+        Nbuilder.setContentTitle("목적지 정상 도착");
+        Nbuilder.setContentText("사용자가 목적지에 도착하였습니다.");
+        Nbuilder.setSmallIcon(R.drawable.smile);
+
+        Notification notification = Nbuilder.build();
+        manager.notify(1,notification);
+
+    }
+    //
 
 
 
