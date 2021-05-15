@@ -323,8 +323,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         }else{
             Nbuilder = new NotificationCompat.Builder(this); }
 
-        Nbuilder.setContentTitle("긴급 상황 발생");
-        Nbuilder.setContentText("사용자에게 긴급 상황이 발생 하였습니다. 지금 즉시 확인하십시오 ");
+        Nbuilder.setContentTitle("긴급 상황 발생 즉시 확인 요망");
+        Nbuilder.setContentText(locationString);
         Nbuilder.setSmallIcon(R.drawable.warning);
 
         Notification notification = Nbuilder.build();
