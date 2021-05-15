@@ -114,6 +114,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     NotificationCompat.Builder Nbuilder;//알람바 구현을 위한것2
     private String CHANNEL_ID="channel1";
     private String CHANNEL_NAME="Channel1";
+    private String CHANNEL_ID2="channel2";
+    private String CHANNEL_NAME2="Channel2";
 
 
 
@@ -245,6 +247,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 if(Emetext.equals("true")){
 
                     Toast.makeText(GuardianActivity.this, "긴급상황 발생", Toast.LENGTH_LONG).show();
+                    showNotificationEmergency();
                 }
 
             }
@@ -296,6 +299,33 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         Nbuilder.setContentTitle("목적지 정상 도착");
         Nbuilder.setContentText("사용자가 목적지에 도착하였습니다.");
         Nbuilder.setSmallIcon(R.drawable.smile);
+
+        Notification notification = Nbuilder.build();
+        manager.notify(1,notification);
+
+    }
+    //
+
+    //긴급알람 알람바 코드
+    public void showNotificationEmergency(){
+        Nbuilder = null;
+        manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        //버전별 나눔
+        //버전 오레오 이상일 경우
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            manager.createNotificationChannel(
+                    new NotificationChannel(CHANNEL_ID2, CHANNEL_NAME2, NotificationManager.IMPORTANCE_DEFAULT)
+            );
+
+            Nbuilder = new NotificationCompat.Builder(this,CHANNEL_ID2);
+
+            //하위 버전일 경우
+        }else{
+            Nbuilder = new NotificationCompat.Builder(this); }
+
+        Nbuilder.setContentTitle("긴급 상황 발생");
+        Nbuilder.setContentText("사용자에게 긴급 상황이 발생 하였습니다. 지금 즉시 확인하십시오 ");
+        Nbuilder.setSmallIcon(R.drawable.warning);
 
         Notification notification = Nbuilder.build();
         manager.notify(1,notification);
