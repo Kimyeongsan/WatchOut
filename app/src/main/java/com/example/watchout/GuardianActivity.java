@@ -65,7 +65,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private Geocoder geocoder; // 지오코더
     private Marker currentMarker = null;
     Button ward_btn;       // 화면 전환 버튼
-
     Button temp; //임시test
 
     private FirebaseAuth firebaseAuth;
