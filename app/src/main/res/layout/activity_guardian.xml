@@ -63,6 +63,7 @@
         </android.widget.Button>
 
         <TextView
+            android:id="@+id/btnCalltoUser"
             android:layout_width="140dp"
             android:layout_height="40dp"
             android:text="피보호자 전화걸기"

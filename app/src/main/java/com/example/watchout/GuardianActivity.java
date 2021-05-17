@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -118,7 +119,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private String CHANNEL_NAME="Channel1";
     private String CHANNEL_ID2="channel2";
     private String CHANNEL_NAME2="Channel2";
-    //알림기능 소리및 진동부분
+
+    TextView btnCallUser;
 
 
 
@@ -153,6 +155,9 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         ward_btn = findViewById(R.id.ward_btn);
         btn_showDestination=findViewById(R.id.btn_showDestination);
+        btnCallUser=(TextView)findViewById(R.id.btnCalltoUser);
+
+
 
 
 /*
@@ -265,6 +270,18 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
         //
 
+
+        //피보호자에게 전화걸기
+        btnCallUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //번호 디비로 @@@@@@
+                //디비 연동 안해서 테스트로 내번호
+                Intent tt = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+"01077675517"));
+                startActivity(tt);
+            }
+        });
 
 
 
