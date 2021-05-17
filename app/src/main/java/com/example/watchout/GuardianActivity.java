@@ -11,9 +11,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -116,6 +118,9 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
     private String CHANNEL_NAME="Channel1";
     private String CHANNEL_ID2="channel2";
     private String CHANNEL_NAME2="Channel2";
+    //알림기능 소리및 진동부분
+
+
 
 
 
@@ -296,6 +301,15 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         }else{
             Nbuilder = new NotificationCompat.Builder(this); }
 
+        //진동
+        Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(500);
+
+        //알람음
+        MediaPlayer player = MediaPlayer.create(GuardianActivity.this,R.raw.goal1);
+        player.start();
+
+        //알림바
         Nbuilder.setContentTitle("목적지 정상 도착");
         Nbuilder.setContentText("사용자가 목적지에 도착하였습니다.");
         Nbuilder.setSmallIcon(R.drawable.smile);
@@ -323,6 +337,15 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         }else{
             Nbuilder = new NotificationCompat.Builder(this); }
 
+        //진동
+        Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(5000);
+
+        //알림음
+        MediaPlayer player = MediaPlayer.create(GuardianActivity.this,R.raw.warning1);
+        player.start();
+
+        //알랍바
         Nbuilder.setContentTitle("긴급 상황 발생 즉시 확인 요망");
         Nbuilder.setContentText(locationString);
         Nbuilder.setSmallIcon(R.drawable.warning);
