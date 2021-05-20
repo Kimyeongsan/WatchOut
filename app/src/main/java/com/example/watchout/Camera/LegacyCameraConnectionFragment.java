@@ -1,4 +1,4 @@
-package com.example.watchout;
+package com.example.watchout.Camera;
 
 /*
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
@@ -32,13 +32,13 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.watchout.CameraConnectionFragment;
-
 import java.io.IOException;
 import java.util.List;
-import com.example.watchout.customview.AutoFitTextureView;
-import org.tensorflow.lite.examples.detection.env.ImageUtils;
-import org.tensorflow.lite.examples.detection.env.Logger;
+
+import com.example.watchout.R;
+import com.example.watchout.Tensorflow.env.ImageUtils;
+import com.example.watchout.Tensorflow.env.Logger;
+import com.example.watchout.CameraView.AutoFitTextureView;
 
 @SuppressLint("ValidFragment")
 public class LegacyCameraConnectionFragment extends Fragment {

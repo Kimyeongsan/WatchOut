@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.example.watchout.tracking;
+package com.example.watchout.Tensorflow.tracking;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,12 +27,15 @@ import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
+
+import com.example.watchout.Tensorflow.env.BorderedText;
+import com.example.watchout.Tensorflow.env.ImageUtils;
+import com.example.watchout.Tensorflow.env.Logger;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import org.tensorflow.lite.examples.detection.env.BorderedText;
-import org.tensorflow.lite.examples.detection.env.ImageUtils;
-import org.tensorflow.lite.examples.detection.env.Logger;
+
 import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
 
 /** A tracker that handles non-max suppression and matches existing objects to new detections. */

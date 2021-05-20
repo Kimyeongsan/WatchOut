@@ -2,22 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.watchout">
 
+    <!--Internet 허용-->
     <uses-sdk />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+    <!--Google Map 허용-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name = "android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE" />
 
+    <!--음성 허용-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!--카메라 허용-->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyDF1gBjOiXJid3NJTSCji5SwtQzW1ZJYFU" />
+
+    <!--전화 걸기 허용-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WatchOut">
 
+        <!--Google Map Api Key-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDF1gBjOiXJid3NJTSCji5SwtQzW1ZJYFU" />
@@ -34,15 +38,16 @@
         <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".DetectorActivity"
+            android:name=".Camera.DetectorActivity"
             android:label="@string/tfe_od_app_name"
             android:screenOrientation="portrait">
         </activity>
+
         <activity android:name=".MainActivity"/>
         <activity android:name=".GuardianActivity"/>
         <activity android:name=".EnrollmentActivity"/>

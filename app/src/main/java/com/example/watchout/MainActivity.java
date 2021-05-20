@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.watchout.Camera.DetectorActivity;
 import com.example.watchout.Data.DB_Data;
 import com.example.watchout.Data.GuardianManagement;
 import com.example.watchout.Data.LocationData;
@@ -48,7 +49,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.speech.tts.TextToSpeech.ERROR;
-import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_CURRENTLOCATION;
 import static com.example.watchout.Data.DB_Data.DB_CHILD_DEST;
 

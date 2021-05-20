@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.watchout.Login.GuardianLoginActivity;
+import com.example.watchout.Login.WardLoginActivity;
 
 public class LoadingActivity extends AppCompatActivity {
     @Override
@@ -18,7 +17,7 @@ public class LoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+                startActivity(new Intent(LoadingActivity.this, WardLoginActivity.class));
                 finish();
             }
         }, 2000);

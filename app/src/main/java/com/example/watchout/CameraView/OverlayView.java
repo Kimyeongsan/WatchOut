@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.example.watchout.customview;
+package com.example.watchout.CameraView;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -36,6 +36,7 @@ public class OverlayView extends View {
 
   @Override
   public synchronized void draw(final Canvas canvas) {
+    super.draw(canvas);
     for (final DrawCallback callback : callbacks) {
       callback.drawCallback(canvas);
     }

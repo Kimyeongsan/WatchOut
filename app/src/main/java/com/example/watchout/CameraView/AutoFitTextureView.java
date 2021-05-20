@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.watchout.customview;
+package com.example.watchout.CameraView;
 
 import android.content.Context;
 import android.util.AttributeSet;

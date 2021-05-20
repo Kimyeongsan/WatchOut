@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.example.watchout.customview;
+package com.example.watchout.CameraView;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -26,7 +26,7 @@ import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
 
 import java.util.List;
 
-public class RecognitionScoreView extends View implements com.example.watchout.customview.ResultsView {
+public class RecognitionScoreView extends View implements com.example.watchout.CameraView.ResultsView {
   private static final float TEXT_SIZE_DIP = 14;
   private final float textSizePx;
   private final Paint fgPaint;
