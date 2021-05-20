@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Intent intent;
     SpeechRecognizer mRecognizer;
-    Button btn1, btn2, btn3, btn4; // 화면 타이틀 버튼
+    Button btn1, btn2, btn3, btn4, camt; // 화면 타이틀 버튼
     private TextToSpeech tts;
     final int PERMISSION = 1;
     StringBuilder destination = new StringBuilder(" "); //입력받은 목적지 정보 임시 저장
@@ -133,6 +133,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Intent intentDest = new Intent(MainActivity.this, GuardianActivity.class);
                 intentDest.putExtra("dest", destination.toString());
+                startActivity(intentDest);
+            }
+        });
+
+        //카메라 테스트
+        camt = (Button)findViewById(R.id.camtest);
+        camt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDest = new Intent(MainActivity.this, DetectorActivity.class);
                 startActivity(intentDest);
             }
         });

@@ -59,6 +59,16 @@
                 android:elevation="50dp"
                 android:background="@drawable/radius"
                 />
+
+            <android.widget.Button
+                android:id="@+id/camtest"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/radius"
+                android:text="Camera Test" />
         </FrameLayout>
 
     </LinearLayout>
