@@ -685,7 +685,8 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                                            @NonNull String[] permissions,
                                            @NonNull int[] grandResults) {
 
-        if ( permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
+        super.onRequestPermissionsResult(permsRequestCode, permissions, grandResults);
+        if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
 
             boolean check_result = true;
 
@@ -696,10 +697,9 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             }
 
-            if ( check_result ) {
+            if (check_result) {
                 startLocationUpdates();
-            }
-            else {
+            } else {
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
                         || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
@@ -713,7 +713,7 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                         }
                     }).show();
 
-                }else {
+                } else {
 
                     Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
                             Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {

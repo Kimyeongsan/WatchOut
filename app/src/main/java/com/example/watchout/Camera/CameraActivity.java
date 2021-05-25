@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.watchout;
+package com.example.watchout.Camera;
 
 import android.Manifest;
 import android.app.Fragment;
@@ -48,13 +48,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
+import com.example.watchout.R;
+import com.example.watchout.Tensorflow.env.ImageUtils;
+import com.example.watchout.Tensorflow.env.Logger;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.nio.ByteBuffer;
-
-import com.example.watchout.CameraConnectionFragment;
-import com.example.watchout.LegacyCameraConnectionFragment;
-import org.tensorflow.lite.examples.detection.env.ImageUtils;
-import org.tensorflow.lite.examples.detection.env.Logger;
 
 public abstract class CameraActivity extends AppCompatActivity
     implements OnImageAvailableListener,

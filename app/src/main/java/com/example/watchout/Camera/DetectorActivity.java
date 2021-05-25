@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.watchout;
+package com.example.watchout.Camera;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -33,14 +33,16 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.example.watchout.customview.OverlayView;
-import com.example.watchout.customview.OverlayView.DrawCallback;
-import org.tensorflow.lite.examples.detection.env.BorderedText;
-import org.tensorflow.lite.examples.detection.env.ImageUtils;
-import org.tensorflow.lite.examples.detection.env.Logger;
+
+import com.example.watchout.R;
+import com.example.watchout.Tensorflow.env.BorderedText;
+import com.example.watchout.Tensorflow.env.ImageUtils;
+import com.example.watchout.Tensorflow.env.Logger;
+import com.example.watchout.CameraView.OverlayView;
+import com.example.watchout.CameraView.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.tflite.Detector;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
-import com.example.watchout.tracking.MultiBoxTracker;
+import com.example.watchout.Tensorflow.tracking.MultiBoxTracker;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track

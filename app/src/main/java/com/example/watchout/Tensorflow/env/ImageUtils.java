@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package org.tensorflow.lite.examples.detection.env;
+package com.example.watchout.Tensorflow.env;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -28,7 +28,7 @@ public class ImageUtils {
   static final int kMaxChannelValue = 262143;
 
   @SuppressWarnings("unused")
-  private static final Logger LOGGER = new Logger();
+  private static final com.example.watchout.Tensorflow.env.Logger LOGGER = new com.example.watchout.Tensorflow.env.Logger();
 
   /**
    * Utility method to compute the allocated size in bytes of a YUV420SP image of the given
