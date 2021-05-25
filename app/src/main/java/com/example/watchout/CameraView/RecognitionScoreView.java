@@ -18,13 +18,16 @@ package com.example.watchout.CameraView;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.speech.tts.TextToSpeech;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-
 import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
 
 import java.util.List;
+import java.util.Locale;
+
+import static android.speech.tts.TextToSpeech.ERROR;
 
 public class RecognitionScoreView extends View implements com.example.watchout.CameraView.ResultsView {
   private static final float TEXT_SIZE_DIP = 14;
@@ -32,6 +35,7 @@ public class RecognitionScoreView extends View implements com.example.watchout.C
   private final Paint fgPaint;
   private final Paint bgPaint;
   private List<Recognition> results;
+  private TextToSpeech tts;
 
   public RecognitionScoreView(final Context context, final AttributeSet set) {
     super(context, set);

@@ -27,12 +27,14 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.watchout.R;
 import com.example.watchout.Tensorflow.env.BorderedText;
@@ -43,6 +45,8 @@ import com.example.watchout.CameraView.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.tflite.Detector;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import com.example.watchout.Tensorflow.tracking.MultiBoxTracker;
+
+import static android.speech.tts.TextToSpeech.ERROR;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
@@ -83,6 +87,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private MultiBoxTracker tracker;
 
   private BorderedText borderedText;
+
+  private TextToSpeech tts;
+
+
 
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -173,6 +181,15 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     if (SAVE_PREVIEW_BITMAP) {
       ImageUtils.saveBitmap(croppedBitmap);
     }
+    //tts 초기화
+    tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int status) {
+        if (status != ERROR) {
+          tts.setLanguage(Locale.KOREAN);
+        }
+      }
+    });
 
     runInBackground(
         new Runnable() {
@@ -200,6 +217,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             final List<Detector.Recognition> mappedRecognitions =
                 new ArrayList<Detector.Recognition>();
 
+
+
             for (final Detector.Recognition result : results) {
               final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
@@ -209,6 +228,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                 result.setLocation(location);
                 mappedRecognitions.add(result);
+                //이부분이 탐지완료하면 머시기머시기 하는부분
+                System.out.println(result.getTitle());
+                tts.speak(result.getTitle(),TextToSpeech.QUEUE_FLUSH, null);
+
               }
             }
 
