@@ -48,7 +48,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".MainActivity"/>
         <activity android:name=".GuardianActivity"/>
         <activity android:name=".EnrollmentActivity"/>
         <activity android:name=".Login.WardLoginActivity"/>

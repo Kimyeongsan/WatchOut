@@ -13,44 +13,126 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00000000">
+    android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:orientation="vertical">
+        android:background="@color/white">
 
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="org.tensorflow.demo.CameraActivity" />
+            android:background="@android:color/black"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="org.tensorflow.demo.CameraActivity" />
+
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/bottom_sheet_layout"
+            layout="@layout/tfe_od_layout_bottom_sheet"
+            android:visibility="gone"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="@color/tfe_semi_transparent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tfl2_logo" />
-        </androidx.appcompat.widget.Toolbar>
+            <android.widget.Button
+                android:id="@+id/btn_Top_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background='@drawable/main_background'
+                android:text="@string/main_button_Top_Left"
+                android:textSize="51sp" />
 
-    </RelativeLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-    <include
-        android:id="@+id/bottom_sheet_layout"
-        layout="@layout/tfe_od_layout_bottom_sheet" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <android.widget.Button
+                    android:id="@+id/btn_Top_Right"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background='@drawable/main_background'
+                    android:text="@string/main_button_Top_Right"
+                    android:textSize="51sp" />
+
+                <!--                <android.widget.Button-->
+                <!--                    android:id="@+id/test2trans"-->
+                <!--                    android:layout_width="80dp"-->
+                <!--                    android:layout_height="30dp"-->
+                <!--                    android:text="Test"-->
+                <!--                    android:layout_gravity="left"-->
+                <!--                    android:layout_marginTop="10dp"-->
+                <!--                    android:layout_marginLeft="10dp"-->
+                <!--                    android:background="@drawable/radius"-->
+                <!--                    />-->
+
+                <android.widget.Button
+                    android:id="@+id/ward_logout"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:text="로그아웃"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:elevation="50dp"
+                    android:background="@drawable/radius"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <android.widget.Button
+                android:id="@+id/btn_Bottom_Left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background='@drawable/main_background'
+                android:text="@string/main_button_Bottom_Left"
+                android:textSize="51sp" />
+
+            <android.widget.Button
+                android:id="@+id/btn_Bottom_Right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background='@drawable/main_background'
+                android:text="@string/main_button_Bottom_Right"
+                android:textSize="51sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -10,12 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.watchout.Data.GuardianData;
-import com.example.watchout.Data.GuardianManagement;
+import com.example.watchout.Camera.DetectorActivity;
 import com.example.watchout.Data.WardData;
 import com.example.watchout.Data.WardManagement;
-import com.example.watchout.GuardianActivity;
-import com.example.watchout.MainActivity;
 import com.example.watchout.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,7 +78,7 @@ public class WardLoginActivity extends AppCompatActivity implements View.OnClick
                     mData = WardManagement.getInstance();
                     mData.setGuardianData(new WardData(user.getDisplayName(), user.getEmail(), null));
 
-                    Intent I = new Intent(WardLoginActivity.this, MainActivity.class);
+                    Intent I = new Intent(WardLoginActivity.this, DetectorActivity.class);
                     startActivity(I);
                 } else {
                     Toast.makeText(WardLoginActivity.this, "Login to continue", Toast.LENGTH_SHORT).show();
@@ -161,7 +158,7 @@ public class WardLoginActivity extends AppCompatActivity implements View.OnClick
                             mData = WardManagement.getInstance();
                             mData.setGuardianData(new WardData(user.getDisplayName(), user.getEmail(), null));
 
-                            startActivity(new Intent(WardLoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(WardLoginActivity.this, DetectorActivity.class));
                         }
                     }
                 });
