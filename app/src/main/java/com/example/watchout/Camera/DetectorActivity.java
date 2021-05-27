@@ -91,7 +91,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private TextToSpeech tts;
 
 
-
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
     final float textSizePx =
@@ -153,7 +152,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 }
               }
             });
-
     tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
   }
 

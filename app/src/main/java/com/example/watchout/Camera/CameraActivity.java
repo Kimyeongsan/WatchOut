@@ -43,7 +43,6 @@ import android.os.Trace;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -146,8 +145,6 @@ public abstract class CameraActivity extends AppCompatActivity
   public boolean destCheck = false; //목적지 정보가 입력된경우 true로 상태변경
   private FirebaseAuth firebaseAuth;
 
-  Button temp2; // test
-
   private GoogleMap mMap;
 
   private static final String TAG = "googlemap_example";
@@ -177,9 +174,6 @@ public abstract class CameraActivity extends AppCompatActivity
     getSupportActionBar().hide();
 
     setContentView(R.layout.tfe_od_activity_camera);
-//    Toolbar toolbar = findViewById(R.id.toolbar);
-    //setSupportActionBar(toolbar);
-    //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     if (hasPermission()) {
       setFragment();
@@ -222,16 +216,6 @@ public abstract class CameraActivity extends AppCompatActivity
 //                startActivity(intentDest);
 //            }
 //        });
-
-    //카메라 테스트
-//    camt = (Button)findViewById(R.id.camtest);
-//    camt.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        Intent intentDest = new Intent(MainActivity.this, DetectorActivity.class);
-//        startActivity(intentDest);
-//      }
-//    });
 
     //버튼연동
     btn1 = (Button) findViewById(R.id.btn_Top_left);
@@ -368,7 +352,6 @@ public abstract class CameraActivity extends AppCompatActivity
         DatabaseReference myEme = database.getReference(DB_CHILD_EME);
         myEme.setValue(EmeMessage);
         Log.d("eme","database upload BTN4  : "+EmeMessage);
-        //
       }
     });
 
@@ -389,7 +372,6 @@ public abstract class CameraActivity extends AppCompatActivity
         DatabaseReference myEme = database.getReference(DB_CHILD_EME);
         myEme.setValue(EmeMessage);
         Log.d("eme","database upload BTN4  : "+EmeMessage);
-        //
       }
     });
 
@@ -961,8 +943,6 @@ public abstract class CameraActivity extends AppCompatActivity
 
     }
   };
-
-
 
   @Override
   public void onMapReady(final GoogleMap googleMap) {
