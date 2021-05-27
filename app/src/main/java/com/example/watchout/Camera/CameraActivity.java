@@ -33,6 +33,7 @@ import android.media.Image;
 import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +45,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -67,6 +69,7 @@ import androidx.core.content.ContextCompat;
 import com.example.watchout.Data.DB_Data;
 import com.example.watchout.Data.GuardianManagement;
 import com.example.watchout.Data.LocationData;
+import com.example.watchout.GuardianActivity;
 import com.example.watchout.Login.WardLoginActivity;
 
 import com.example.watchout.R;
@@ -233,12 +236,27 @@ public abstract class CameraActivity extends AppCompatActivity
       }
     });
 
+
+
     //stt 준비
     intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
     intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
     intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
     LocationData locationData = new LocationData();
+
+
+    //초기 시작 알람음 ok
+    MediaPlayer player = MediaPlayer.create(CameraActivity.this,R.raw.goal1);
+    player.start();
+    //초기 시작 진동 ok
+    Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+    vibrator.vibrate(500);
+    //초기 시작 TTS 소리가 지금 안남 nope
+    tts.speak(getString(R.string.initGuide), TextToSpeech.QUEUE_FLUSH, null);
+    Log.d("initttS","init tts activate");
+
+
 
     //목적지 설정 버튼
     btn1.setOnClickListener(new View.OnClickListener() {
@@ -249,6 +267,8 @@ public abstract class CameraActivity extends AppCompatActivity
         if (destCheck == false) {
           //초기 가이드
           tts.speak(getString(R.string.Guide), TextToSpeech.QUEUE_FLUSH, null);
+
+
         } else if (destCheck == true) {
 
           outString.delete(0, outString.length());
@@ -374,6 +394,8 @@ public abstract class CameraActivity extends AppCompatActivity
         Log.d("eme","database upload BTN4  : "+EmeMessage);
       }
     });
+
+
 
     //로그아웃 함수
     logOuts();
