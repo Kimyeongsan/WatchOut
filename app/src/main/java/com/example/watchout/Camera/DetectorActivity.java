@@ -220,16 +220,29 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 for (final Detector.Recognition result : results) {
                   final RectF location = result.getLocation();
                   if (location != null && result.getConfidence() >= minimumConfidence) {
-                    canvas.drawRect(location, paint);
+                    if(result.getTitle().equals("bicycle") || result.getTitle().equals("motorcycle")){
+                      //canvas.drawRect(location, paint);
 
-                    cropToFrameTransform.mapRect(location);
+                      //cropToFrameTransform.mapRect(location);
 
-                    result.setLocation(location);
-                    mappedRecognitions.add(result);
-                    //이부분이 탐지완료하면 머시기머시기 하는부분
-//                    System.out.println(result.getTitle());
-//                    tts.speak(result.getTitle(),TextToSpeech.QUEUE_FLUSH, null);
-
+                      //result.setLocation(location);
+                      //mappedRecognitions.add(result);
+                      //이부분이 탐지완료하면 머시기머시기 하는부분
+                      System.out.println(result.getTitle());
+                      if(result.getTitle().equals("bicycle")){
+                        tts.speak("전방에 자전거가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
+                      }else if(result.getTitle().equals("motorcycle")){
+                        tts.speak("전방에 오토바이가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
+                      }
+                      //tts.speak(result.getTitle(),TextToSpeech.QUEUE_FLUSH, null);
+                      try
+                      {
+                        Thread.sleep(5000);
+                      } catch (InterruptedException e)
+                      {
+                        e.printStackTrace();
+                      }
+                    }
                   }
                 }
 
