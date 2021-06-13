@@ -152,7 +152,7 @@ public abstract class CameraActivity extends AppCompatActivity
 
   private static final String TAG = "googlemap_example";
   private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-  private static final int UPDATE_INTERVAL_MS = 10000;  // 1초 1000
+  private static final int UPDATE_INTERVAL_MS = 100000;  // 10초 1000
   private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
   private static final int PERMISSIONS_REQUEST_CODE = 100;
