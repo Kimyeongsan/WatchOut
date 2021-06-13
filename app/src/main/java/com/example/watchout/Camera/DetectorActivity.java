@@ -219,20 +219,38 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                 for (final Detector.Recognition result : results) {
                   final RectF location = result.getLocation();
+                  String dist = "알수없는 거리";
                   if (location != null && result.getConfidence() >= minimumConfidence) {
+                    //System.out.println(result.getLocation());
                     if(result.getTitle().equals("bicycle") || result.getTitle().equals("motorcycle")){
-                      //canvas.drawRect(location, paint);
+                      //화면에 출력
+                      canvas.drawRect(location, paint);
+                      cropToFrameTransform.mapRect(location);
+                      result.setLocation(location);
+                      mappedRecognitions.add(result);
+                      System.out.println(location.bottom);
+                      System.out.println(location.top);
+                      System.out.println(location.left);
+                      System.out.println(location.right);
+                      // 거리를 추정할 넓이
+                      final float area = (location.right - location.left) * (location.bottom-location.top);
+                      if(area/10000 > 10){
+                        dist = "약 10미터";
+                      }else if(area/10000 > 8){
+                        dist = "약 20미터";
+                      }else if(area/10000 > 5){
+                        dist = "약 25미터";
+                      }else{
+                        dist = "약 30미터 이상";
+                      }
+                      //System.out.println(area);
 
-                      //cropToFrameTransform.mapRect(location);
-
-                      //result.setLocation(location);
-                      //mappedRecognitions.add(result);
                       //이부분이 탐지완료하면 머시기머시기 하는부분
-                      System.out.println(result.getTitle());
+                      //System.out.println(result.getTitle());
                       if(result.getTitle().equals("bicycle")){
-                        tts.speak("전방에 자전거가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
+                        tts.speak(dist + "전방에 자전거가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
                       }else if(result.getTitle().equals("motorcycle")){
-                        tts.speak("전방에 오토바이가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
+                        tts.speak(dist + "전방에 오토바이가 있습니다. 보행에 주의해주세요.",TextToSpeech.QUEUE_FLUSH, null);
                       }
                       //tts.speak(result.getTitle(),TextToSpeech.QUEUE_FLUSH, null);
                       try
