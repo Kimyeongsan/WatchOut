@@ -81,17 +81,6 @@
                     android:text="@string/main_button_Top_Right"
                     android:textSize="51sp" />
 
-                <!--                <android.widget.Button-->
-                <!--                    android:id="@+id/test2trans"-->
-                <!--                    android:layout_width="80dp"-->
-                <!--                    android:layout_height="30dp"-->
-                <!--                    android:text="Test"-->
-                <!--                    android:layout_gravity="left"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginLeft="10dp"-->
-                <!--                    android:background="@drawable/radius"-->
-                <!--                    />-->
-
                 <android.widget.Button
                     android:id="@+id/ward_logout"
                     android:layout_width="80dp"
