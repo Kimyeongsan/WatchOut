@@ -99,7 +99,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="80dp"
         android:layout_gravity="center">
         <android.widget.Button
             android:id="@+id/guardian_logout"
@@ -110,10 +110,18 @@
             android:textStyle="bold"
             android:textColor="#DE8E66"
             android:background="@drawable/radius"
-            android:layout_gravity="center"
+            android:layout_gravity="top|center"
             android:gravity="center"
             android:elevation="5dp">
         </android.widget.Button>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/image_logo"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp">
+        </ImageView>
     </FrameLayout>
 
 </LinearLayout>

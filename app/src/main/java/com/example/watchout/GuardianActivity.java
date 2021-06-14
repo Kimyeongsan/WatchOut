@@ -122,10 +122,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
 
     TextView btnCallUser;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,20 +152,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
         ward_btn = findViewById(R.id.ward_btn);
         btn_showDestination=findViewById(R.id.btn_showDestination);
         btnCallUser=(TextView)findViewById(R.id.btnCalltoUser);
-
-
-
-
-/*
-        //작업파트2(사용자의 목적지 정보 받아오기)
-        //사용자의 목적지 정보 받아와서 destinationMarkerPoint여기에 넣어주기
-        //이부분을 인텐트 받는게 아니라 디비에서 받아오는걸로 수정하면됨
-        Intent intentDest = getIntent();//날아오는 인텐트 받기
-
-        destinationMarkerPoint=intentDest.getStringExtra("dest");
-        Log.d("desttest","dest Come success Guardian Activity : "+destinationMarkerPoint);
-
-         */
 
         //디비에서 목적지 정보 받기
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -282,10 +264,6 @@ public class GuardianActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(tt);
             }
         });
-
-
-
-
 
 
         // 피보호자 등록 화면
